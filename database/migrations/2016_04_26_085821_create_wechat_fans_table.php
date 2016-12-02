@@ -19,7 +19,7 @@ class CreateWechatFansTable extends Migration
             $table->primary(['user_id', 'account_id']);
             $table->integer('group_id')->comment('粉丝组group_id');
             $table->string('openid', 100)->comment('openid');
-            $table->timestamp('subscribed_at')->default('0000-00-00 00:00:00')->comment('关注时间');
+            $table->timestamp('subscribed_at')->default(NULL)->comment('关注时间');
             $table->timestamps();
             $table->softDeletes();
         });
