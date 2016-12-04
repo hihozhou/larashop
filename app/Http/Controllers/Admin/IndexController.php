@@ -22,6 +22,6 @@ class IndexController extends Controller
      */
     public function index()
     {
-        return "123";
+        return view('admin.index');
     }
 }

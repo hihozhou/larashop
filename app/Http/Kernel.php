@@ -57,5 +57,6 @@ class Kernel extends HttpKernel
          * Admin auth
          */
         'admin.auth' => \App\Http\Middleware\Admin\Authenticate::class,
+        'admin.guest' => \App\Http\Middleware\Admin\RedirectIfAuthenticated::class,
     ];
 }

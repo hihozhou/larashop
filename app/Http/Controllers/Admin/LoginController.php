@@ -12,7 +12,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/admin/home';
+    protected $redirectTo = '/admin';
 
     /**
      * define login view
@@ -21,5 +21,10 @@ class LoginController extends Controller
     public function showLoginForm()
     {
         return view('admin.login');
+    }
+
+    public function __construct()
+    {
+        $this->middleware('admin.guest', ['except' => 'logout']);
     }
 }
