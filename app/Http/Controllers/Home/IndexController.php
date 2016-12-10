@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers\Wechat;
+namespace App\Http\Controllers\Home;
 
 use App\Http\Controllers\Controller;
 
@@ -9,7 +9,7 @@ use App\Http\Controllers\Controller;
  * Date: 16-12-2
  * Time: 下午1:12
  */
-class ServerController extends Controller
+class IndexController extends Controller
 {
 
     public function __construct()
@@ -22,6 +22,7 @@ class ServerController extends Controller
      */
     public function index()
     {
-
+        echo "123";
+//        return view('home');
     }
 }

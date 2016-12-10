@@ -43,3 +43,15 @@ Route::group(
 //        Route::get('/account/change-account/{id}', 'AccountController@changeAccount');
     }
 );
+
+/**
+ * Wap group
+ */
+Route::group(['namespace' => 'Home'], function () {
+    Route::get('/index', 'IndexController@index');
+    Route::get('/oauth', 'WechatController@oauth');
+    Route::group(['middleware' => ['home.auth']], function () {
+        Route::resource('user', 'UserController');
+    });
+});
+
