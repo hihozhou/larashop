@@ -17,8 +17,8 @@ class WechatController extends Controller
         $config = [
             // ...
             'debug' => true,
-            'app_id' => 'wxbf119b885147c9ba',
-            'secret' => 'b8998eeb8a6d8a690a59aa5ec28b0c93',
+            'app_id' => 'wxe55e04b26a1df3d8',
+            'secret' => 'c82936514cbf64046d296e8d58deca62',
             'token' => 'KObL62GdYx',//回调需要
             'aes_key' => 'M6wWHCgcesWriUnUJ2L4ubk8Rifg4xqv1M9n3QNxlJQ',//高级功能需要
         ];
