@@ -13,7 +13,6 @@ require('./bootstrap');
  */
 
 //Vue.component('example', require('./components/Example.vue'));
-import Example from './components/Example.vue';
 //
 const Foo = {template: '<div>foo</div>'};
 const Bar = {template: '<div>bar</div>'};
@@ -21,8 +20,6 @@ const Bar = {template: '<div>bar</div>'};
 const routes = [
     {path: '/admin', component: Foo},
     {path: '/admin/index', component: Foo},
-    {path: '/admin/example', component: Example},
-
     {path: '/admin/bar', component: Bar}
 ];
 //

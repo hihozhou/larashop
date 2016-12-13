@@ -5,10 +5,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Styles -->
     <link href="{{ elixir('css/admin/app.css')}}" rel="stylesheet">
@@ -19,10 +19,8 @@
                 'csrfToken' => csrf_token(),
         ]); ?>
     </script>
-
-
 </head>
-<body class="skin-blue sidebar-mini">
+<body>
 <div id="app">
     <nav class="navbar navbar-default navbar-static-top">
         <div class="container">
@@ -86,20 +84,8 @@
     @yield('content')
 </div>
 
-{{-- jQuery --}}
-<script src="{{ elixir('js/admin/jquery-2.2.0.min.js')}}"></script>
-{{-- pnotify --}}
-<script src="{{ elixir('js/admin/pnotify.js')}}"></script>
-<script src="{{ elixir('js/admin/pnotify.buttons.js')}}"></script>
-{{--<script src="https://cdnjs.cloudflare.com/ajax/libs/pnotify/3.0.0/pnotify.js"></script>--}}
-{{--<script src="//cdn.bootcss.com/pnotify/3.0.0/pnotify.buttons.js"></script>--}}
-
-{{-- Sweetalert --}}
-<script src="https://cdn.jsdelivr.net/sweetalert2/4.0.5/sweetalert2.min.js"></script>
-
 <!-- Scripts -->
-<script src="{{ elixir('js/admin/app.js') }}"></script>
+<script src="{{ elixir('js/app.js') }}"></script>
 {{--<script src="/js/app.js"></script>--}}
-
 </body>
 </html>

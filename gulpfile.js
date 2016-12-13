@@ -14,6 +14,15 @@ require('laravel-elixir-vue-2');
  */
 
 elixir(mix => {
-    mix.sass('app.scss')
-       .webpack('app.js');
+    mix.webpack('app.js')
+        .version('js/app.js');// resources/assets/js/app.js to public/js/app.js
+
+    //Admin css
+    mix.sass('admin/app.scss', 'public/css/admin/app.css');
+    //Admin js
+    mix.scripts('admin/jquery-2.2.0.min.js', 'public/js/admin/jquery-2.2.0.min.js');
+    mix.scripts('admin/pnotify.js', 'public/js/admin/pnotify.js');
+    mix.scripts('admin/pnotify.buttons.js', 'public/js/admin/pnotify.buttons.js');
+    mix.webpack('admin/app.js', 'public/js/admin/app.js');
 });
+

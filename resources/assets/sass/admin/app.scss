@@ -1,0 +1,23 @@
+
+// Fonts
+@import url(https://fonts.googleapis.com/css?family=Raleway:300,400,600);
+
+// Variables
+@import "variables";
+
+// Bootstrap
+@import "node_modules/bootstrap-sass/assets/stylesheets/bootstrap";
+
+//Pnotify
+@import url(https://cdnjs.cloudflare.com/ajax/libs/pnotify/3.0.0/pnotify.css);
+// pnotify.buttons
+@import "resources/assets/css/admin/pnotify.buttons";
+
+// AdminLTE
+@import "resources/assets/css/admin/lte/AdminLTE";
+@import "resources/assets/css/admin/lte/skin-blue.min";
+
+//Font Awesome
+@import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css);
+//Sweetalert
+@import url(https://cdn.jsdelivr.net/sweetalert2/4.0.5/sweetalert2.css);

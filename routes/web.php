@@ -22,6 +22,13 @@ Route::get('/', function () {
 /**
  * Admin group
  */
+
+
+/*
+|--------------------------------------------------------------------------
+| Admin Routes
+|--------------------------------------------------------------------------
+*/
 Route::group(
     [
         'prefix' => 'admin',
@@ -32,10 +39,20 @@ Route::group(
         Route::post('login', 'LoginController@login');
         Route::post('logout', 'LoginController@logout')->name('admin.logout');
 
-        //need auth
+        /*
+        |--------------------------------------------------------------------------
+        | Dashboard Routes
+        |--------------------------------------------------------------------------
+        */
         Route::group(['middleware' => ['admin.auth']], function () {
-            Route::get('/', 'IndexController@index');
-            Route::get('/index', 'IndexController@index');
+            Route::get('{router?}', function ($router = null) {
+//                echo "123";exit;
+////                var_dump($router);
+////                echo $router;exit;
+                return view('admin.index');
+            })->where('router', '[\/\w\.-]*');
+//            Route::get('/', 'IndexController@index');
+//            Route::get('/index', 'IndexController@index');
 
             // ...
         });
