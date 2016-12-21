@@ -16,3 +16,14 @@ use Illuminate\Http\Request;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:api');
+
+
+Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
+    Route::get('/sku', 'GoodsSkuController@index');
+    Route::post('/sku/create', 'GoodsSkuController@store');
+    Route::delete('/sku/{id}', 'GoodsSkuController@destroy');
+//    Route::get('/oauth', 'WechatController@oauth');
+//    Route::group(['middleware' => ['home.auth']], function () {
+//        Route::resource('user', 'UserController');
+//    });
+});

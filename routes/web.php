@@ -71,4 +71,7 @@ Route::group(['namespace' => 'Home'], function () {
         Route::resource('user', 'UserController');
     });
 });
+Route::get('/test', function (){
+   return  view('admin.test');
+});
 

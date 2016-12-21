@@ -12,16 +12,37 @@ require('./bootstrap');
  * the application, or feel free to tweak this setup for your needs.
  */
 
-//Vue.component('example', require('./components/Example.vue'));
+//import App from './App.vue'
+
+Vue.component('example', require('./components/Example.vue'));
+//Vue.component('app-header', require('./components/layouts/Header.vue'));
+//Vue.component('vue-app', require('./App.vue'));
+//Vue.component('vue-app', require('./App.vue'));
 //
 const Foo = {template: '<div>foo</div>'};
 const Bar = {template: '<div>bar</div>'};
 
+
 const routes = [
-    {path: '/admin', component: Foo},
-    {path: '/admin/index', component: Foo},
-    {path: '/admin/bar', component: Bar}
-];
+        {
+            path: '/admin', component: require('./components/Sku.vue'),
+        },
+        {
+            path: '/admin/sku', component: require('./components/Sku.vue')
+        },
+        {
+            path: '/admin/sku/create', component: require('./components/SkuCreate.vue')
+        }
+        ,
+        {
+            path: '/admin/foo', component: Foo
+        }
+        ,
+        {
+            path: '/admin/bar', component: Bar
+        }
+    ]
+    ;
 //
 const router = new VueRouter({
     mode: 'history',

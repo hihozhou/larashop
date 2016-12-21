@@ -14,8 +14,9 @@
 @import "resources/assets/css/admin/pnotify.buttons";
 
 // AdminLTE
-@import "resources/assets/css/admin/lte/AdminLTE";
-@import "resources/assets/css/admin/lte/skin-blue.min";
+@import "node_modules/admin-lte/dist/css/AdminLTE";
+//@import "resources/assets/css/admin/lte/AdminLTE";
+@import "node_modules/admin-lte/dist/css/skins/skin-blue.min";
 
 //Font Awesome
 @import url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css);
