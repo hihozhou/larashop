@@ -10,6 +10,8 @@ class GoodsSku extends Model
     use SoftDeletes;
     //
 
+//    protected $fillable = array('name', 'pid');
+
     public function parent()
     {
 

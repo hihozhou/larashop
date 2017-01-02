@@ -29,10 +29,7 @@
                                             class="btn btn-success">
                                         添加子类
                                     </button>
-                                    <button type="button"
-                                            class="btn btn-warning">
-                                        编辑
-                                    </button>
+                                    <router-link :to="{ name: 'skusEdit', params: { id: sku.id }}" tag="button" class="btn btn-warning">编辑</router-link>
                                     <button type="button"
                                             class="btn btn-danger" @click="skuDelete(index)">
                                         删除
@@ -66,14 +63,14 @@
         },
         methods: {
             fetchSkuList () {
-                this.$http({url: '/api/admin/sku', method: 'GET'}).then(function (response) {
+                this.$http({url: '/api/admin/skus', method: 'GET'}).then(function (response) {
                     console.log(response.data.data.list);
                     this.$set(this, 'skuList', response.data.data.list);
                 });
             },
             create () {
                 show_stack_info('Creating Category...');
-                this.$router.push('/admin/sku/create');
+                this.$router.push('/admin/skus/create');
 //                this.$router.back();
 //                this.$http({url: '/api/categories', method: 'POST'}).then(function (response) {
 

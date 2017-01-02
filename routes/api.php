@@ -19,9 +19,11 @@ Route::get('/user', function (Request $request) {
 
 
 Route::group(['namespace' => 'Admin', 'prefix' => 'admin'], function () {
-    Route::get('/sku', 'GoodsSkuController@index');
-    Route::post('/sku/create', 'GoodsSkuController@store');
-    Route::delete('/sku/{id}', 'GoodsSkuController@destroy');
+    Route::get('/skus', 'GoodsSkuController@index');
+    Route::post('/skus/create', 'GoodsSkuController@store');
+    Route::delete('/skus/{id}', 'GoodsSkuController@destroy');
+    Route::get('/skus/{id}', 'GoodsSkuController@show');
+    Route::patch('/skus/{id}', 'GoodsSkuController@update');
 //    Route::get('/oauth', 'WechatController@oauth');
 //    Route::group(['middleware' => ['home.auth']], function () {
 //        Route::resource('user', 'UserController');

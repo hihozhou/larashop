@@ -17,10 +17,11 @@ class GoodsSkuController extends BaseController
     public function index()
     {
         //
-//        $list = GoodsSku::with('childs.childs')->get()->reject(function ($item) {
-//            return $item['pid'] > 0;
-//        })->toArray();
-        $list = GoodsSku::get()->toArray();
+        $list = GoodsSku::with('childs.childs')->get()->reject(function ($item) {
+            return $item['pid'] > 0;
+        })->toArray();
+//        print_r($list);exit;
+//        $list = GoodsSku::get()->toArray();
         return $this->jsonSuccessResponse(['list' => $list]);
     }
 
@@ -45,6 +46,7 @@ class GoodsSkuController extends BaseController
         //
         $sku = new GoodsSku();
         $sku->name = $request->name;
+        $sku->pid = $request->pid;
         $sku->save();
         print_r($request->all());
         exit;
@@ -59,6 +61,13 @@ class GoodsSkuController extends BaseController
     public function show($id)
     {
         //
+        try {
+            $sku = GoodsSku::findOrFail($id);
+        } catch (\Exception $e) {
+            return $this->jsonFailResponse('找不到有效记录');
+        }
+//        var_dump($sku);
+        return $this->jsonSuccessResponse(['sku' => $sku->toArray()]);
     }
 
     /**
@@ -79,9 +88,18 @@ class GoodsSkuController extends BaseController
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request,$id)
     {
         //
+        try {
+            $sku = GoodsSku::findOrFail($id);
+        } catch (\Exception $e) {
+            return $this->jsonFailResponse('找不到有效记录');
+        }
+        $sku->name = $request->name;
+        $sku->pid = $request->pid;
+        $sku->save();
+        return $this->jsonSuccessResponse();
     }
 
     /**

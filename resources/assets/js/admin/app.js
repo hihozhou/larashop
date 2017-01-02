@@ -28,10 +28,13 @@ const routes = [
             path: '/admin', component: require('./components/Sku.vue'),
         },
         {
-            path: '/admin/sku', component: require('./components/Sku.vue')
+            path: '/admin/skus', name: 'skus', component: require('./components/Sku.vue')
         },
         {
-            path: '/admin/sku/create', component: require('./components/SkuCreate.vue')
+            path: '/admin/skus/create',name:'skusCreate', component: require('./components/SkuCreate.vue')
+        },
+        {
+            path: '/admin/skus/:id/edit', name: 'skusEdit', component: require('./components/SkuEdit.vue')
         }
         ,
         {

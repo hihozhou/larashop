@@ -1,52 +1,35 @@
 <template>
-
     <section class="content">
-        <div>
-            <h1>Sku管理</h1>
-            <button type="button" class="btn btn-lg btn-primary btn-flat">
-                添加Sku
-            </button>
-        </div>
         <div class="row">
             <div class="col-md-12">
-                <div class="panel panel-default">
-                    <!-- Default panel contents -->
-                    <div class="box box-info">
-                        <div class="box-header with-border">
-                            <h3 class="box-title">Edit Category</h3>
-                        </div>
-                        <!-- /.box-header -->
-                        <!-- form start -->
-                        <form @keydown.enter.prevent="deleteCategory" class="form-horizontal">
-                            <div class="box-body">
-                                <div class="form-group">
-                                    <label for="title" class="col-sm-1 control-label">Title</label>
-                                    <div class="col-sm-11">
-                                        <input type="text" class="form-control" id="title" placeholder="title"
-                                               v-model="category.name">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label for="icon" class="col-sm-1 control-label">Icon</label>
-                                    <div class="col-sm-11">
-                                        <input class="form-control" id="icon" placeholder="fa fa-icon"
-                                               v-model="category.icon">
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- /.box-body -->
-                            <div class="box-footer">
-                                <button class="btn btn-flat btn-info pull-right" @click="updateCategory(category)">Save
-                                    category
-                                </button>
-                                <button class="btn btn-flat btn-danger" @click="deleteCategory(category)">Delete
-                                </button>
-                            </div>
-                            <!-- /.box-footer -->
-                        </form>
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">sku创建</h3>
                     </div>
-
-
+                    <form @keydown.enter.prevent="deleteCategory" class="form-horizontal">
+                        <div class="box-body">
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">父级id</label>
+                                <div class="col-sm-11">
+                                    <input type="number" class="form-control" id="pid" placeholder="父级id"
+                                           v-model="sku.pid">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">名称</label>
+                                <div class="col-sm-11">
+                                    <input type="text" class="form-control" id="name" placeholder="sku名称"
+                                           v-model="sku.name">
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer">
+                            <button class="btn btn-flat btn-info pull-right" @click="create(sku)">保存</button>
+                            <button class="btn btn-flat btn-danger" @click="cancel()">取消</button>
+                        </div>
+                        <!-- /.box-footer -->
+                    </form>
                 </div>
             </div>
         </div>
@@ -57,32 +40,34 @@
     import { stack_bottomright, show_stack_success, show_stack_error } from '../Pnotice.js'
 
     export default {
-        ready(){
-            this.fetchCategory()
+        mounted(){
+            this.fetchSku();
         },
         data () {
             return {
-                category: {}
+                sku: {}
             }
         },
         methods: {
-            fetchCategory () {
-                let itemId = this.$route.params.hashid
-                this.$http({url: '/api/categories/' + itemId, method: 'GET'}).then(function (response) {
-                    this.$set('category', response.data)
+            fetchSku () {
+                let skuId = this.$route.params.id;
+                this.$http({url: '/api/admin/skus/' + skuId, method: 'GET'}).then(function (response) {
+//                    console.log(response.data.data.sku);
+                    this.$set(this, 'sku', response.data.data.sku)
                 })
             },
-            updateCategory (category) {
+            create (sku) {
                 event.preventDefault();
-                this.$http.patch('/api/categories/' + category.hashid, category).then(function (response) {
-                    show_stack_success('Category saved', response)
+                this.$http.patch('/api/admin/skus/'+sku.id, sku).then(function (response) {
+                    show_stack_success('Sku saved', response);
+//                    this.$router.push('/admin/skus');
                 }, function (response) {
-                    show_stack_error('Failed to save category', response)
+                    show_stack_error('Failed to save sku', response)
                 })
             },
             deleteCategory (category) {
                 event.preventDefault();
-                let self = this
+                let self = this;
                 swal({
                     title: 'Are you sure?',
                     text: 'You will not be able to recover this category!',
@@ -102,7 +87,7 @@
                         show_stack_error('Failed to delete category', response)
                     })
                 }, function (dismiss) {
-// dismiss can be 'cancel', 'overlay', 'close', 'timer'
+                    // dismiss can be 'cancel', 'overlay', 'close', 'timer'
                     if (dismiss === 'cancel') {
                         swal(
                                 'Cancelled',
@@ -111,10 +96,16 @@
                         );
                     }
                 });
+            },
+            cancel(){
+                this.$router.push('/admin/skus');
+//                this.$router.go(-1);
             }
+
         }
     }
 </script>
+
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>

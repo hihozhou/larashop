@@ -9,9 +9,16 @@
                     <form @keydown.enter.prevent="deleteCategory" class="form-horizontal">
                         <div class="box-body">
                             <div class="form-group">
-                                <label for="title" class="col-sm-1 control-label">名称</label>
+                                <label class="col-sm-1 control-label">父级id</label>
                                 <div class="col-sm-11">
-                                    <input type="text" class="form-control" id="title" placeholder="sku名称"
+                                    <input type="number" class="form-control" id="pid" placeholder="父级id"
+                                           v-model="sku.pid">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">名称</label>
+                                <div class="col-sm-11">
+                                    <input type="text" class="form-control" id="name" placeholder="sku名称"
                                            v-model="sku.name">
                                 </div>
                             </div>
@@ -50,16 +57,16 @@
             },
             create (sku) {
                 event.preventDefault();
-                this.$http.post('/api/admin/sku/create', sku).then(function (response) {
+                this.$http.post('/api/admin/skus/create', sku).then(function (response) {
                     show_stack_success('Sku saved', response);
-                    this.$router.push('/admin/sku');
+//                    this.$router.push('/admin/skus');
                 }, function (response) {
                     show_stack_error('Failed to save sku', response)
                 })
             },
             deleteCategory (category) {
                 event.preventDefault();
-                let self = this
+                let self = this;
                 swal({
                     title: 'Are you sure?',
                     text: 'You will not be able to recover this category!',
@@ -90,7 +97,7 @@
                 });
             },
             cancel(){
-                this.$router.push('/admin/sku');
+                this.$router.push('/admin/skus');
 //                this.$router.go(-1);
             }
 
