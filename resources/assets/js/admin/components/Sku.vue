@@ -21,23 +21,63 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr v-for="(sku,index) in skuList" v-bind:index="index">
-                            <td>{{sku.name}}</td>
-                            <td>
-                                <div class="btn-group">
-                                    <button type="button"
-                                            class="btn btn-success">
-                                        添加子类
-                                    </button>
-                                    <router-link :to="{ name: 'skusEdit', params: { id: sku.id }}" tag="button" class="btn btn-warning">编辑</router-link>
-                                    <button type="button"
-                                            class="btn btn-danger" @click="skuDelete(index)">
-                                        删除
-                                    </button>
-                                </div>
+                        <template v-for="(sku,index) in skuList">
+                            <tr v-bind:index="index">
+                                <td>{{sku.name}}</td>
+                                <td>
+                                    <div class="btn-group">
+                                        <router-link :to="{ name: 'skusCreate', query: { pid: sku.id }}" tag="button" class="btn btn-success">添加子类</router-link>
+                                        <router-link :to="{ name: 'skusEdit', params: { id: sku.id }}" tag="button" class="btn btn-warning">编辑</router-link>
+                                        <button type="button"
+                                                class="btn btn-danger" @click="skuDelete(index)">
+                                            删除
+                                        </button>
+                                    </div>
 
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
+                            <template v-if="sku.childs.length != 0">
+                                <template v-for="sku in sku.childs">
+                                    <tr  v-bind:index="index">
+                                        <td>|——{{sku.name}}</td>
+                                        <!--<td>{{skuOne}}</td>-->
+                                        <td>
+                                            <div class="btn-group">
+                                                <router-link :to="{ name: 'skusCreate', query: { pid: sku.id }}" tag="button" class="btn btn-success">添加子类</router-link>
+                                                <router-link :to="{ name: 'skusEdit', params: { id: sku.id }}" tag="button" class="btn btn-warning">编辑</router-link>
+                                                <button type="button"
+                                                        class="btn btn-danger" @click="skuDelete(index)">
+                                                    删除
+                                                </button>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                    <template v-if="sku.childs.length != 0">
+                                        <tr v-for="sku in sku.childs" v-bind:index="index">
+                                            <td>|————{{sku.name}}</td>
+                                            <td>
+                                                <div class="btn-group">
+                                                    <!--<button type="button"-->
+                                                            <!--class="btn btn-success">-->
+                                                        <!--添加子类-->
+                                                    <!--</button>-->
+                                                    <router-link :to="{ name: 'skusEdit', params: { id: sku.id }}"
+                                                                 tag="button" class="btn btn-warning">编辑
+                                                    </router-link>
+                                                    <button type="button"
+                                                            class="btn btn-danger" @click="skuDelete(index)">
+                                                        删除
+                                                    </button>
+                                                </div>
+
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </template>
+                            </template>
+
+                        </template>
                         </tbody>
 
                     </table>

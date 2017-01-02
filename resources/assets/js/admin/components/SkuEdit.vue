@@ -98,7 +98,8 @@
                 });
             },
             cancel(){
-                this.$router.push('/admin/skus');
+                this.$router.push({ name: 'skus'});
+//                this.$router.push('/admin/skus');
 //                this.$router.go(-1);
             }
 

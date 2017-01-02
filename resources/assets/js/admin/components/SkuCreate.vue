@@ -25,8 +25,8 @@
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer">
-                        <button class="btn btn-flat btn-info pull-right" @click="create(sku)">保存</button>
-                        <button class="btn btn-flat btn-danger" @click="cancel()">取消</button>
+                            <button class="btn btn-flat btn-info pull-right" @click="create(sku)">保存</button>
+                            <button class="btn btn-flat btn-danger" @click="cancel()">取消</button>
                         </div>
                         <!-- /.box-footer -->
                     </form>
@@ -40,17 +40,18 @@
     import { stack_bottomright, show_stack_success, show_stack_error } from '../Pnotice.js'
 
     export default {
-        ready(){
+        mounted(){
             this.fetchSku()
         },
         data () {
             return {
-                sku: {}
+                sku: {pid: 0}
             }
         },
         methods: {
             fetchSku () {
-                let itemId = this.$route.params.id;
+                this.sku.pid = this.$route.query.pid;
+//                this.$set('sku.pid',pid);
 //                this.$http({url: '/api/categories/' + itemId, method: 'GET'}).then(function (response) {
 //                    this.$set('category', response.data)
 //                })
