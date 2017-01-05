@@ -14,8 +14,10 @@ class CreateGoodsDetailSkus extends Migration
     public function up()
     {
         Schema::create('goods_detail_skus', function (Blueprint $table) {
-            $table->increments('id');
+            $table->integer('goods_detail_id');
+            $table->integer('sku_id');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
