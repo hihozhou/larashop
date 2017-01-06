@@ -26,10 +26,14 @@
                                 <td>{{sku.name}}</td>
                                 <td>
                                     <div class="btn-group">
-                                        <router-link :to="{ name: 'skusCreate', query: { pid: sku.id }}" tag="button" class="btn btn-success">添加子类</router-link>
-                                        <router-link :to="{ name: 'skusEdit', params: { id: sku.id }}" tag="button" class="btn btn-warning">编辑</router-link>
+                                        <router-link :to="{ name: 'skusCreate', query: { pid: sku.id }}" tag="button"
+                                                     class="btn btn-success">添加子类
+                                        </router-link>
+                                        <router-link :to="{ name: 'skusEdit', params: { id: sku.id }}" tag="button"
+                                                     class="btn btn-warning">编辑
+                                        </router-link>
                                         <button type="button"
-                                                class="btn btn-danger" @click="skuDelete(index)">
+                                                class="btn btn-danger" @click="skuDelete(sku)">
                                             删除
                                         </button>
                                     </div>
@@ -37,16 +41,20 @@
                                 </td>
                             </tr>
                             <template v-if="sku.childs.length != 0">
-                                <template v-for="sku in sku.childs">
-                                    <tr  v-bind:index="index">
+                                <template :skuList="sku.childs" v-for="(sku,index) in sku.childs">
+                                    <tr :index="index">
                                         <td>|——{{sku.name}}</td>
                                         <!--<td>{{skuOne}}</td>-->
                                         <td>
                                             <div class="btn-group">
-                                                <router-link :to="{ name: 'skusCreate', query: { pid: sku.id }}" tag="button" class="btn btn-success">添加子类</router-link>
-                                                <router-link :to="{ name: 'skusEdit', params: { id: sku.id }}" tag="button" class="btn btn-warning">编辑</router-link>
+                                                <router-link :to="{ name: 'skusCreate', query: { pid: sku.id }}"
+                                                             tag="button" class="btn btn-success">添加子类
+                                                </router-link>
+                                                <router-link :to="{ name: 'skusEdit', params: { id: sku.id }}"
+                                                             tag="button" class="btn btn-warning">编辑
+                                                </router-link>
                                                 <button type="button"
-                                                        class="btn btn-danger" @click="skuDelete(index)">
+                                                        class="btn btn-danger" @click="skuDelete(sku)">
                                                     删除
                                                 </button>
                                             </div>
@@ -54,19 +62,19 @@
                                         </td>
                                     </tr>
                                     <template v-if="sku.childs.length != 0">
-                                        <tr v-for="sku in sku.childs" v-bind:index="index">
+                                        <tr v-for="(sku,index) in sku.childs" v-bind:index="index">
                                             <td>|————{{sku.name}}</td>
                                             <td>
                                                 <div class="btn-group">
                                                     <!--<button type="button"-->
-                                                            <!--class="btn btn-success">-->
-                                                        <!--添加子类-->
+                                                    <!--class="btn btn-success">-->
+                                                    <!--添加子类-->
                                                     <!--</button>-->
                                                     <router-link :to="{ name: 'skusEdit', params: { id: sku.id }}"
                                                                  tag="button" class="btn btn-warning">编辑
                                                     </router-link>
                                                     <button type="button"
-                                                            class="btn btn-danger" @click="skuDelete(index)">
+                                                            class="btn btn-danger" @click="skuDelete(sku)">
                                                         删除
                                                     </button>
                                                 </div>
@@ -88,10 +96,8 @@
         </div>
     </section>
 </template>
-
 <script>
     import { stack_bottomright, show_stack_success, show_stack_error, show_stack_info } from '../Pnotice.js'
-
     export default {
         mounted () {
             this.fetchSkuList()
@@ -104,7 +110,7 @@
         methods: {
             fetchSkuList () {
                 this.$http({url: '/api/admin/skus', method: 'GET'}).then(function (response) {
-                    console.log(response.data.data.list);
+//                    console.log(response.data.data.list);
                     this.$set(this, 'skuList', response.data.data.list);
                 });
             },
@@ -116,10 +122,11 @@
 
 //                });
             },
-            skuDelete (index) {
+            //TODO 不刷新页面，直接删除数组数据
+            skuDelete (sku) {
                 let self = this;
-                let sku = self.skuList[index];
-                console.log(sku);
+//                let sku = self.skuList[index];
+//                console.log(sku);return;
                 swal({
                     title: '你确认码?',
                     text: '您将无法恢复此SKU!',
@@ -128,13 +135,14 @@
                     confirmButtonText: '确认!',
                     cancelButtonText: '取消',
                 }).then(function () {
-                    self.skuList.splice(index, 1);
-                    self.$http.delete('/api/admin/sku/' + sku.id, sku).then(function (response) {
+//                    self.skuList.splice(index, 1);
+                    self.$http.delete('/api/admin/skus/' + sku.id, sku).then(function (response) {
                         swal(
                                 'Deleted!',
                                 'Your sku has been deleted.',
                                 'success'
                         );
+                        location.reload();
                     }, function (response) {
                         show_stack_error('Failed to delete sku', response)
                     })
@@ -148,7 +156,7 @@
                         );
                     }
                 });
-            },
+            }
         }
     }
 </script>

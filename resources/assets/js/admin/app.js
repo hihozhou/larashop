@@ -38,7 +38,7 @@ const routes = [
         }
         ,
         {
-            path: '/admin/foo', component: Foo
+            path: '/admin/goods/create',  name: 'goodsCreate', component: require('./components/GoodsCreate.vue')
         }
         ,
         {
