@@ -19,8 +19,8 @@ window.Vue = require('vue');
 require('vue-resource');
 
 //引入vue 路由
-window.VueRouter = require('vue-router');//引入
-Vue.use(VueRouter);//使用
+//window.VueRouter = require('vue-router');//引入
+//Vue.use(VueRouter);//使用
 
 /**
  * We'll register a HTTP interceptor to attach the "CSRF" header to each of

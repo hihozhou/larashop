@@ -14,7 +14,7 @@ require('./bootstrap');
 
 //import App from './App.vue'
 
-Vue.component('example', require('./components/Example.vue'));
+//Vue.component('example', require('./components/Example.vue'));
 //Vue.component('app-header', require('./components/layouts/Header.vue'));
 //Vue.component('vue-app', require('./App.vue'));
 //Vue.component('vue-app', require('./App.vue'));
@@ -23,44 +23,41 @@ const Foo = {template: '<div>foo</div>'};
 const Bar = {template: '<div>bar</div>'};
 
 
-const routes = [
-        {
-            path: '/admin', component: require('./components/Sku.vue'),
-        },
-        {
-            path: '/admin/skus', name: 'skus', component: require('./components/Sku.vue')
-        },
-        {
-            path: '/admin/skus/create',name:'skusCreate', component: require('./components/SkuCreate.vue')
-        },
-        {
-            path: '/admin/skus/:id/edit', name: 'skusEdit', component: require('./components/SkuEdit.vue')
-        }
-        ,
-        {
-            path: '/admin/goods/create',  name: 'goodsCreate', component: require('./components/GoodsCreate.vue')
-        }
-        ,
-        {
-            path: '/admin/bar', component: Bar
-        }
-    ]
-    ;
+//const routes = [
+//        {
+//            path: '/admin', component: require('./components/Sku.vue'),
+//        },
+//        {
+//            path: '/admin/skus', name: 'skus', component: require('./components/Sku.vue')
+//        },
+//        {
+//            path: '/admin/skus/create',name:'skusCreate', component: require('./components/SkuCreate.vue')
+//        },
+//        {
+//            path: '/admin/skus/:id/edit', name: 'skusEdit', component: require('./components/SkuEdit.vue')
+//        }
+//        ,
+//        {
+//            path: '/admin/goods/create',  name: 'goodsCreate', component: require('./components/GoodsCreate.vue')
+//        }
+//        ,
+//        {
+//            path: '/admin/bar', component: Bar
+//        }
+//    ]
+//    ;
 //
-const router = new VueRouter({
-    mode: 'history',
-    routes: routes
-});
+//const router = new VueRouter({
+//    mode: 'history',
+//    routes: routes
+//});
 
 const app = new Vue({
     el: '#app',
-    router: router
+    data: {
+        a:1
+    }
+    //router: router
 }).$mount('#app');
 
-//
-//routers.map({
-//    '/123': {
-//        component: require('./components/Example.vue')
-//    }
-//});
 

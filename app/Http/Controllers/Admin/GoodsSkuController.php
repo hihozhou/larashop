@@ -17,12 +17,13 @@ class GoodsSkuController extends BaseController
     public function index()
     {
         //
-        $list = GoodsSku::with('childs.childs')->get()->reject(function ($item) {
+        $skus = GoodsSku::with('childs.childs')->get()->reject(function ($item) {
             return $item['pid'] > 0;
-        })->toArray();
+        });
 //        print_r($list);exit;
 //        $list = GoodsSku::get()->toArray();
-        return $this->jsonSuccessResponse(['list' => $list]);
+        return view('admin.sku.index', ['skus' => $skus]);
+//        return $this->jsonSuccessResponse(['list' => $list]);
     }
 
     /**
@@ -33,6 +34,7 @@ class GoodsSkuController extends BaseController
     public function create()
     {
         //
+        return view('admin.sku.create');
     }
 
     /**
@@ -44,12 +46,19 @@ class GoodsSkuController extends BaseController
     public function store(Request $request)
     {
         //
+        $validator = \Validator::make($request->all(), [
+            'name' => 'required|max:255',
+        ]);
+        if ($validator->fails()) {
+            return $this->jsonFailResponse($validator->errors()->first());
+        }
         $sku = new GoodsSku();
         $sku->name = $request->name;
         $sku->pid = $request->pid;
-        $sku->save();
-        print_r($request->all());
-        exit;
+        if (!$sku->save()) {
+            return $this->jsonFailResponse('操作错误');
+        }
+        return $this->jsonSuccessResponse();
     }
 
     /**
@@ -79,6 +88,8 @@ class GoodsSkuController extends BaseController
     public function edit($id)
     {
         //
+        $sku = GoodsSku::findOrFail($id);
+        return view('admin.sku.edit', ['sku' => $sku]);
     }
 
     /**
@@ -88,7 +99,7 @@ class GoodsSkuController extends BaseController
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request,$id)
+    public function update(Request $request, $id)
     {
         //
         try {
@@ -111,6 +122,9 @@ class GoodsSkuController extends BaseController
     public function destroy($id)
     {
         //
-        GoodsSku::destroy($id);
+        if (GoodsSku::destroy($id)) {
+            return $this->jsonSuccessResponse();
+        }
+        return $this->jsonFailResponse('删除数据失败');
     }
 }
