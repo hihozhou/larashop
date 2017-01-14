@@ -16,10 +16,13 @@ class CreateGoods extends Migration
         Schema::create('goods', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->comment('商品名称');
-            $table->enum('is_sale', ['0', '1'])->comment('时候销售：0否，1是');
+            $table->enum('is_sale', ['0', '1'])->default(0)->comment('是否销售：0否，1是');
             $table->integer('sku_top_id')->comment('商品sku最高级别id，goods_skus中pid=0');
             $table->string('desc')->comment('商品简单描述');
+            $table->text('description')->comment('参数说明');
             $table->text('content')->comment('商品图文内容');
+            $table->integer('banner')->comment('images图片id');
+            $table->string('silder')->comment('images图片id字符串，用，分割');
             $table->timestamps();
             $table->softDeletes();
         });

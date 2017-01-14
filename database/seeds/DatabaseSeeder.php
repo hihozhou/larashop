@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
     {
          $this->call(UsersTableSeeder::class);
          $this->call(GoodsSkusTableSeeder::class);
+         $this->call(ImagesTableSeeder::class);
     }
 }
 
@@ -79,4 +80,15 @@ class GoodsSkusTableSeeder extends Seeder
         ));
 
     }
+}
+class ImagesTableSeeder extends Seeder
+{
+    public function run()
+    {
+        DB::table('images')->insert(array(
+            'id' => 1,
+            'name' => "14843760905082.jpg",
+        ));
+    }
+
 }

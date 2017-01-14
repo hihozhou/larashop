@@ -10,6 +10,10 @@ use Qiniu\Storage\UploadManager;
 class Image extends Model
 {
 
+    protected $fillable = [
+        'name'
+    ];
+
     const ACCESS_KEY = 'mrqZWq_gBAWW6Mb8Emkwfq7cltH9kWZ7j54Dwp0g';
     const SECRET_KEY = '9x4dFeM68b0CT9pg4tOqYXpe1q9-Le3Yj3RibfQD';
     const BUCKET_NAME = 'limit';
@@ -29,11 +33,12 @@ class Image extends Model
 //            var_dump($err);//图片上传失败,写入日志
             return false;
         }
-        return self::getUrl($ret['key']);
+        return $storageFileName;
+//        return self::baseUrl($ret['key']);
     }
 
 
-    public static function getUrl($name)
+    public static function baseUrl($name)
     {
 //        $auth = new Auth(self::ACCESS_KEY, self::SECRET_KEY);
         $base_url = 'http://oi7him8kd.bkt.clouddn.com/' . $name;

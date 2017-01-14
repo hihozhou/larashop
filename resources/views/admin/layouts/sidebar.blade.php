@@ -35,7 +35,8 @@
             </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li class="active"><a href="/admin/skus"><i class="fa fa-circle-o"></i>商品sku</a></li>
+                    <li class="active"><a href="/admin/sku"><i class="fa fa-circle-o"></i>商品sku</a></li>
+                    <li><a href="/admin/goods/create"><i class="fa fa-circle-o"></i> 添加商品</a></li>
                     <li><a href="/admin/goods"><i class="fa fa-circle-o"></i> 商品列表</a></li>
                 </ul>
             </li>

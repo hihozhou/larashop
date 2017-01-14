@@ -17,9 +17,7 @@ class GoodsSkuController extends BaseController
     public function index()
     {
         //
-        $skus = GoodsSku::with('childs.childs')->get()->reject(function ($item) {
-            return $item['pid'] > 0;
-        });
+        $skus = GoodsSku::tree();
 //        print_r($list);exit;
 //        $list = GoodsSku::get()->toArray();
         return view('admin.sku.index', ['skus' => $skus]);
@@ -46,16 +44,15 @@ class GoodsSkuController extends BaseController
     public function store(Request $request)
     {
         //
-        $validator = \Validator::make($request->all(), [
+        $data = $request->all();
+        $validator = \Validator::make($data, [
             'name' => 'required|max:255',
         ]);
         if ($validator->fails()) {
             return $this->jsonFailResponse($validator->errors()->first());
         }
-        $sku = new GoodsSku();
-        $sku->name = $request->name;
-        $sku->pid = $request->pid;
-        if (!$sku->save()) {
+        $sku = GoodsSku::create($data);
+        if (!$sku) {
             return $this->jsonFailResponse('操作错误');
         }
         return $this->jsonSuccessResponse();
@@ -126,5 +123,21 @@ class GoodsSkuController extends BaseController
             return $this->jsonSuccessResponse();
         }
         return $this->jsonFailResponse('删除数据失败');
+    }
+
+    public function tree()
+    {
+        return $this->jsonSuccessResponse(['skus' => GoodsSku::tree()]);
+    }
+
+    public function childs($pid)
+    {
+        $tree = GoodsSku::tree();
+        foreach ($tree as $sku) {
+            if ($sku['id'] == $pid) {
+                return $this->jsonSuccessResponse(['skus' => $sku->childs->toArray(), 'skuCombList' => []]);
+            }
+        }
+        return $this->jsonFailResponse('找不到对应的子');
     }
 }

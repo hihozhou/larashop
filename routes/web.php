@@ -45,12 +45,16 @@ Route::group(
         |--------------------------------------------------------------------------
         */
         Route::group(['middleware' => ['admin.auth']], function () {
-            Route::get('{router?}', function ($router = null) {
-//                echo "123";exit;
-////                var_dump($router);
-////                echo $router;exit;
-                return view('admin.index');
-            })->where('router', '[\/\w\.-]*');
+            Route::get('/', 'GoodsSkuController@index');
+            Route::resource('sku', 'GoodsSkuController');
+            Route::resource('goods', 'GoodsController');
+            Route::post('/upload', 'UploadController@store');
+//            Route::get('{router?}', function ($router = null) {
+////                echo "123";exit;
+//////                var_dump($router);
+//////                echo $router;exit;
+//                return view('admin.index');
+//            })->where('router', '[\/\w\.-]*');
 //            Route::get('/', 'IndexController@index');
 //            Route::get('/index', 'IndexController@index');
 

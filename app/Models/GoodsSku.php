@@ -8,9 +8,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class GoodsSku extends Model
 {
     use SoftDeletes;
+
     //
 
-//    protected $fillable = array('name', 'pid');
+    protected $fillable = array('name', 'pid');
 
     public function parent()
     {
@@ -22,5 +23,12 @@ class GoodsSku extends Model
     {
 
         return $this->hasMany('App\Models\GoodsSku', 'pid', 'id');
+    }
+
+    public static function tree()
+    {
+        return GoodsSku::with('childs.childs')->get()->reject(function ($item) {
+            return $item['pid'] > 0;
+        });
     }
 }

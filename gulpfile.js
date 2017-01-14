@@ -24,5 +24,13 @@ elixir(mix => {
     mix.scripts('admin/pnotify.js', 'public/js/admin/pnotify.js');
     mix.scripts('admin/pnotify.buttons.js', 'public/js/admin/pnotify.buttons.js');
     mix.webpack('admin/app.js', 'public/js/admin/app.js');
+    mix.copy('resources/assets/js/admin/um', 'public/js/admin/um/');
+    mix.scripts('admin/goods/base.js', 'public/js/admin/goods/base.js');
+    mix.scripts('admin/goods/upload_img.js', 'public/js/admin/goods/upload_img.js');
+    mix.scripts('admin/goods/goods_msg.js', 'public/js/admin/goods/goods_msg.js');
+    mix.scripts('admin/goods/upload_base.js', 'public/js/admin/goods/upload_base.js');
+    mix.scripts('admin/goods/jquery.fileupload.js', 'public/js/admin/goods/jquery.fileupload.js');
+    mix.scripts('admin/goods/jquery.ui.widget.js', 'public/js/admin/goods/jquery.ui.widget.js');
+    mix.copy('resources/assets/images/admin', 'public/images/admin/');
 });
 
