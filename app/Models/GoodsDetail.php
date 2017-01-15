@@ -16,8 +16,12 @@ class GoodsDetail extends Model
 
     public function skus()
     {
-
         return $this->hasMany('App\Models\GoodsDetailSku', 'goods_detail_id', 'id');
+    }
+
+    public function image_src()
+    {
+        return $this->hasOne('App\Models\Image', 'id', 'image_id');
     }
 
 }

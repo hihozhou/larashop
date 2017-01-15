@@ -14,4 +14,9 @@ class GoodsDetailSku extends Model
         'goods_detail_id', 'sku_id',
     ];
 
+    public function sku()
+    {
+        return $this->hasOne('App\Models\GoodsSku', 'id', 'sku_id');
+    }
+
 }

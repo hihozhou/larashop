@@ -19,7 +19,7 @@
                 'csrfToken' => csrf_token(),
         ]); ?>
     </script>
-
+    @yield('css')
 
 </head>
 <body class="skin-blue sidebar-mini">

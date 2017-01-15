@@ -40,11 +40,14 @@ class Image extends Model
 
     public static function baseUrl($name)
     {
-//        $auth = new Auth(self::ACCESS_KEY, self::SECRET_KEY);
         $base_url = 'http://oi7him8kd.bkt.clouddn.com/' . $name;
         return $base_url;
-//        $private_url = $auth->privateDownloadUrl($base_url);
-//        return $private_url;
+    }
+
+    public static function privateUrl($name)
+    {
+        $auth = new Auth(self::ACCESS_KEY, self::SECRET_KEY);
+        return $auth->privateDownloadUrl(self::baseUrl($name));
     }
 
 }

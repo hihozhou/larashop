@@ -16,9 +16,12 @@ class Goods extends Model
 
     public function details()
     {
-
         return $this->hasMany('App\Models\GoodsDetail', 'goods_id', 'id');
     }
 
+    public function banner_src()
+    {
+        return $this->hasOne('App\Models\Image', 'id', 'banner');
+    }
 
 }

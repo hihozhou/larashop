@@ -1,4 +1,5 @@
 @extends('admin.layouts.app')
+
 @section('css')
     <style>
         #xw_loader {
@@ -220,6 +221,7 @@
 
     </style>
 @endsection
+
 @section('content')
 
     <section class="content" id="appContent">
@@ -261,7 +263,7 @@
                                         商品名称：
                                     </div>
                                     <div class="col-md-4">
-                                        <input id="name" value="" type="text" class="form-control"/>
+                                        <input id="name" value="{{$goods->name}}" type="text" class="form-control"/>
                                     </div>
                                     <div class="col-md-1 text_warning text_left form_bar">
                                         *
@@ -284,19 +286,19 @@
 
                                 <div class="col-md-12 margin10">
                                     <div class="col-md-2 text_right form_bar">
-                                        上架销售：
+                                        上架销售：{{$goods->is_sale}}
                                     </div>
                                     <div class="col-md-4">
                                         <div class="btn-group clearfix" data-toggle="buttons">
-                                            <label class="btn btn-warning">
+                                            <label class="btn btn-warning @if($goods->is_sale==1)active @endif">
                                                 <input name="isSale" type="radio" id="allow_1" autocomplete="off"
-                                                       value="1" checked>
+                                                       value="1" @if($goods->is_sale==1)checked @endif>
                                                 上架
                                             </label>
-                                            <label class="btn btn-warning">
+                                            <label class="btn btn-warning @if($goods->is_sale==0)active @endif">
                                                 <input name="isSale" type="radio" id="allow_0" autocomplete="off"
                                                        value="0"
-                                                       checked
+                                                       @if($goods->is_sale==0)checked @endif
                                                 > 下架
                                             </label>
                                         </div>
@@ -311,7 +313,7 @@
                                         商品简述：
                                     </div>
                                     <div class="col-md-6">
-                                        <textarea id="desc" class="form-control"></textarea>
+                                        <textarea id="desc" class="form-control">{{$goods->desc}}</textarea>
                                     </div>
                                 </div>
 
@@ -321,13 +323,13 @@
 
                         <!--参数描述 开始-->
                         <div role="tabpanel" class="tab-pane" id="description">
-                            <textarea id="descriptionText"></textarea>
+                            <textarea id="descriptionText">{{$goods->description}}</textarea>
                         </div>
                         <!--参数描述 结束-->
 
                         <!--详细信息 开始-->
                         <div role="tabpanel" class="tab-pane" id="content">
-                            <textarea id="contentText"></textarea>
+                            <textarea id="contentText">{{$goods->content}}</textarea>
                         </div>
                         <!--详细信息 结束-->
 
@@ -340,8 +342,9 @@
                                 <div class="col-xs-4">
                                     <select class="form-control" id="sku_def">
                                         <option value="-1">-请选择SKU-</option>
-                                        @foreach($skus as $sku)
-                                            <option value="{{$sku->id}}">{{$sku->name}}</option>
+                                        @foreach($tree as $sku)
+                                            <option value="{{$sku->id}}"
+                                                    @if($goods->sku_top_id==$sku->id) selected @endif>{{$sku->name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -351,23 +354,25 @@
                                 请选择该商品所关联的各种属性
                             </div>
                             <div id="sku_checkbox_wrapper" class="clearfix">
-                                {{--@foreach($skus as $sku)--}}
-                                {{--<div class="pl50 clearfix">--}}
-                                {{--<div class=" form_bar col-xs-1 text_right">--}}
-                                {{--{{$sku->name}}：&nbsp;&nbsp;--}}
-                                {{--</div>--}}
-                                {{--<div class="col-xs-11 check_box_line">--}}
-                                {{--@foreach($sku->childs as $sku)--}}
-                                {{--<div class="col-xs-2 form_bar">--}}
-                                {{--<label title="{{$sku->name}}">--}}
-                                {{--<input type="checkbox" class="top_checkbox"--}}
-                                {{--value="{{$sku->id}}">{{$sku->name}}--}}
-                                {{--</label>--}}
-                                {{--</div>--}}
-                                {{--@endforeach--}}
-                                {{--</div>--}}
-                                {{--</div>--}}
-                                {{--@endforeach--}}
+                                @foreach($skus as $sku)
+                                    <div class="pl50 clearfix">
+                                        <div class=" form_bar col-xs-1 text_right">
+                                            {{$sku->name}}：&nbsp;&nbsp;
+                                        </div>
+                                        <div class="col-xs-11 check_box_line">
+                                            @foreach($sku->childs as $sku)
+                                                <div class="col-xs-2 form_bar">
+                                                    <label title="{{$sku->name}}">
+                                                        <input type="checkbox" class="top_checkbox"
+                                                               value="{{$sku->id}}"
+                                                               @if(in_array($sku->id,$goods_sku_ids))checked @endif
+                                                        >{{$sku->name}}
+                                                    </label>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                @endforeach
                             </div>
                             <div class="pl50 clearfix">
                                 <a href="javascript:void(0);" class="btn btn-primary" id="check_confirm">选好了</a>
@@ -378,7 +383,68 @@
                                 根据以上所选择的属性，共有以下这些组合，请给需要的组合设置价格等信息：
                             </div>
                             <div class="clearfix" id="sku_group">
+                                @foreach($goods->details as $goodsDetail)
+                                    <div class="border clearfix padding10 skuBanner" data-id="{{$goodsDetail->id}}"
+                                         data-defIDStr="{{implode(',',$goodsDetail->skus->pluck('sku_id')->toArray())}}">
+                                        <div class="col-xs-2">
+                                            <p class="form_bar text_center">
+                                                SKU组合-{{$goodsDetail->id}}
+                                            </p>
+                                            <div class="skuImg">
+                                                <img src="{{\App\Models\Image::baseUrl($goodsDetail->image_src->name)}}"
+                                                     class="width100"
+                                                     data-src="{{\App\Models\Image::baseUrl($goodsDetail->image_src->name)}}"
+                                                     alt=""/>
+                                                <input type="file" class="input_file upload_list" name="file"
+                                                       value="" data-url="" multiple=""
+                                                       id="upload{{$goodsDetail->id}}"/>
+                                            </div>
 
+                                        </div>
+                                        <div class="col-xs-4">
+                                            <p class="col-xs-3 pr5">
+                                                <span class="form_bar mb10 col-xs-12 small_text">原价</span>
+                                                <input type="text" value="{{$goodsDetail->original}}"
+                                                       class="form-control defaultPrice_sku"/>
+                                            </p>
+                                            <p class="col-xs-3 pr5">
+                                                <span class="form_bar mb10 col-xs-12 small_text">销售价</span>
+                                                <input type="text" value="{{$goodsDetail->price}}"
+                                                       class="form-control salePrice_sku"/>
+                                            </p>
+                                            <p class="col-xs-3 pr5">
+                                                <span class="form_bar mb10 col-xs-12 small_text">剩余量</span>
+                                                <input type="text" value="{{$goodsDetail->stock}}"
+                                                       class="form-control restNum_sku"/>
+                                            </p>
+                                            <p class="col-xs-3 pr5">
+                                                <span class="form_bar mb10 col-xs-12 small_text">销售量</span>
+                                                <input type="text" value="{{$goodsDetail->sales}}"
+                                                       class="form-control num_sku"/>
+                                            </p>
+                                        </div>
+
+                                        <div class="col-xs-4">
+                                            <p class="form_bar"> SKU属性组合</p>
+                                            @foreach($goodsDetail->skus as $sku)
+                                                <div data-id="{{$sku->sku_id}}" class="col-xs-4 mb10">
+                                <span class="skuBt pull-left" title="{{$sku->sku->name}}">
+                                {{$sku->sku->name}}
+                                </span>
+                                                </div>
+                                            @endforeach
+
+                                        </div>
+                                        <div class="col-xs-2">
+                                            <p class="col-xs-4 text-center">
+                                                <span class="form_bar mb10 col-xs-12 small_text">上架</span>
+                                                <input type="checkbox" class="isSale"
+                                                       @if($goodsDetail->is_sale==1) checked @endif>
+                                            </p>
+                                        </div>
+
+                                    </div>
+                                @endforeach
                             </div>
                         </div>
                         <!--SKU 结束-->
@@ -391,14 +457,14 @@
                                         上传商品主图
                                     </button>
                                     ：
-                                    <input type="hidden" id="banner" value=""/>
+                                    <input type="hidden" id="banner" value="{{$goods->banner}}"/>
                                     {{--<input type="hidden" id="thumbImg" value=""/>--}}
                                 </div>
                                 <div class="col-md-4">
                                     <div class=" padding0 margin10">
                                         <div class="upload_wraper dash">
                                             <div class="logo_wraper ">
-                                                <img id="pic" src=""
+                                                <img id="pic" src="{{$goods->banner_src->url}}"
                                                      class="width100 img-rounded" alt="">
                                                 <input type="file" style="visibility: hidden;" class="input_file"
                                                        id="fileupload" name="file" value="" data-url="" multiple="">
@@ -419,19 +485,17 @@
                                 <div class="col-md-10">
                                     <div id="showPicDiv" class=" padding0 margin10">
 
-                                        {{--<volist name="silderArr" id="vo">--}}
-
-                                        {{--<div id="item_{$i - 1}" class="item_pic_mom">--}}
-                                        {{--<div class="item_pic_left">--}}
-                                        {{--<img style="" src="{$vo}"/>--}}
-                                        {{--</div>--}}
-                                        {{--<div class="item_pic_right">--}}
-                                        {{--<a href="#" class="item_pic_info"--}}
-                                        {{--onclick="javascript:deletePic({$i - 1});">删除</a>--}}
-                                        {{--</div>--}}
-                                        {{--</div>--}}
-
-                                        {{--</volist>--}}
+                                        @foreach(\App\Models\Image::whereIn('id',explode(',',$goods->silder))->get() as $image)
+                                            <div id="item_{{$image->id}}" class="item_pic_mom" data-id="{{$image->id}}">
+                                                <div class="item_pic_left">
+                                                    <img style="" src="{{\App\Models\Image::baseUrl($image->name)}}"/>
+                                                </div>
+                                                <div class="item_pic_right">
+                                                    <a href="#" class="item_pic_info"
+                                                       onclick="javascript:deletePic({{$image->id}});">删除</a>
+                                                </div>
+                                            </div>
+                                        @endforeach
 
                                     </div>
                                 </div>
@@ -459,7 +523,6 @@
     <script src="{{ elixir('js/admin/goods/jquery.ui.widget.js')}}"></script>
     <script src="{{ elixir('js/admin/goods/jquery.fileupload.js')}}"></script>
     <script src="{{ elixir('js/admin/goods/upload_base.js')}}"></script>
-    <script src="{{ elixir('js/admin/goods/goods_msg.js')}}"></script>
 
 
     <script type="text/javascript">
@@ -511,8 +574,10 @@
             var isSale = $(":radio[name='isSale']:checked").val();
             var sku_top_id = $("#sku_def").val();
             var silder = [];// 轮播图
-            picJson.path.forEach(function (value, index, array) {
-                silder.push(index);
+            //循环获取轮播图
+
+            $(".item_pic_mom").each(function () {
+                silder.push($(this).attr('data-id'));
             });
 
             if (name == '' || name == undefined) {
@@ -562,8 +627,8 @@
             ajaxData.is_sale = $(":radio[name='isSale']:checked").val();
 
             var silder = [];// 轮播图
-            picJson.path.forEach(function (value, index, array) {
-                silder.push(index);
+            $(".item_pic_mom").each(function () {
+                silder.push($(this).attr('data-id'));
             });
             ajaxData.silder = silder.join(',');
 
@@ -571,7 +636,7 @@
             $('.skuBanner').each(function (index) {
                 self = $(this);
                 ajaxData.details[index] = {};
-
+                ajaxData.details[index].id = self.attr('data-id');
                 ajaxData.details[index].original = $.trim(self.find('.defaultPrice_sku').val());
                 ajaxData.details[index].price = $.trim(self.find('.salePrice_sku').val());
                 ajaxData.details[index].stock = $.trim(self.find('.restNum_sku').val());
@@ -588,29 +653,21 @@
             ajaxData.defIDStr = ajaxData.defIDStr.join(',');
 
             ajaxData.sku_top_id = $("#sku_def").val();
-            if ($("#goodsID").val() > 0) {
-                ajaxData.goodsID = $("#goodsID").val();
-            }
-
 //                console.log(ajaxData);
 
-            ajax_go_1(ajaxData, "/admin/goods", onSave);
+            ajax_go_1(ajaxData, "/admin/goods/{{$goods->id}}", onSave, 'PATCH');
         });
         function onSave(rsp) {
 
             if (rsp.error_code == 0) {
 
-//                if (rsp.type == 'add') {
-//                    $("#goodsID").val(rsp.goodsID);
-//                }
-
                 swal('保存成功', '', 'success');
-                location.href = '/admin/goods/';
             } else {
-                swal('保存失败;' + rsp.error_msg, '', 'error');
+                swal('保存失败;' + rsp.desc, '', 'error');
             }
         }
 
 
     </script>
+    <script src="{{ elixir('js/admin/goods/goods_msg.js')}}"></script>
 @endsection

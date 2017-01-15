@@ -39,10 +39,10 @@ class UploadController extends BaseController
      */
     public function store(Request $request)
     {
-        return $this->jsonSuccessResponse([
-            'id' => 1,
-            'url' => 'http://oi7him8kd.bkt.clouddn.com/14843760905082.jpg',
-        ]);
+//        return $this->jsonSuccessResponse([
+//            'id' => 1,
+//            'url' => 'http://oi7him8kd.bkt.clouddn.com/14843760905082.jpg',
+//        ]);
         if (!$name = Image::upload($request->file('file'))) {
             $this->jsonFailResponse('图片上传失败');
         }
