@@ -4,9 +4,9 @@
 
     <section class="content">
         <div>
-            <h1>Sku管理</h1>
+            <h1>商品管理</h1>
             <button type="button" class="create btn btn-lg btn-primary btn-flat">
-                添加Sku
+                添加商品
             </button>
         </div>
         <div class="row">
@@ -36,13 +36,21 @@
                                 </td>
                                 <td>{{$goods->name}}</td>
                                 <td data-id="{{$goods->id}}">
-                                    @if($goods->is_sale==1)
-                                        <font color="green">上架</font> /
-                                        <button href="javascript:void(0)" class="is_sale" data-val="0">下架</button>
-                                    @else
-                                        <button href="javascript:void(0)" class="is_sale" data-val="1">上架</button> /
-                                        <font color="red">下架</font>
-                                    @endif
+                                    {{--@if($goods->is_sale==1)--}}
+                                    {{--<font color="green">上架</font> /--}}
+                                    {{--<button href="javascript:void(0)" class="is_sale" data-val="0">下架</button>--}}
+                                    {{--@else--}}
+                                    {{--<button href="javascript:void(0)" class="is_sale" data-val="1">上架</button> /--}}
+                                    {{--<font color="red">下架</font>--}}
+                                    {{--@endif--}}
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-success is_sale" data-val="1"
+                                                @if($goods->is_sale==1) disabled @endif>上架
+                                        </button>
+                                        <button type="button" class="btn btn-danger is_sale" data-val="0"
+                                                @if($goods->is_sale==0) disabled @endif>下架
+                                        </button>
+                                    </div>
                                 </td>
                                 <td>{{$goods->created_at}}</td>
                                 <td data-id="{{$goods->id}}">
@@ -77,6 +85,31 @@
                 id = 0;
             }
             location.href = '/admin/goods/' + id + '/edit';
+        });
+        $(".is_sale").click(function () {
+            var id = $(this).closest("td").attr("data-id");
+            console.log(id);
+            console.log($(this).attr("data-val"));
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "/admin/goods/" + id + '/sell',
+                type: 'PUT',
+                data: {
+                    is_sale: $(this).attr("data-val")
+                },
+                success: function (response) {
+                    if (response.error_code == 0) {
+                        show_stack_success('售卖状态更改成功', response);
+                        window.location.reload();
+                    } else {
+                        show_stack_error('售卖状态更改失败', response);
+                    }
+                }, error: function () {
+                    show_stack_error();
+                }
+            });
         });
     </script>
 @endsection

@@ -38,6 +38,7 @@
                     <li class="active"><a href="/admin/sku"><i class="fa fa-circle-o"></i>商品sku</a></li>
                     <li><a href="/admin/goods/create"><i class="fa fa-circle-o"></i> 添加商品</a></li>
                     <li><a href="/admin/goods"><i class="fa fa-circle-o"></i> 商品列表</a></li>
+                    <li><a href="/admin/sales"><i class="fa fa-circle-o"></i> 特卖管理</a></li>
                 </ul>
             </li>
 

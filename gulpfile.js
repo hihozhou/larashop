@@ -32,5 +32,15 @@ elixir(mix => {
     mix.scripts('admin/goods/jquery.fileupload.js', 'public/js/admin/goods/jquery.fileupload.js');
     mix.scripts('admin/goods/jquery.ui.widget.js', 'public/js/admin/goods/jquery.ui.widget.js');
     mix.copy('resources/assets/images/admin', 'public/images/admin/');
+
+    //Shop css
+    mix.styles('shop/common.css', 'public/css/shop/common.css');
+    mix.styles('shop/swiper.css', 'public/css/shop/swiper.css');
+    mix.styles('shop/index.css', 'public/css/shop/index.css');
+
+    mix.copy('node_modules/admin-lte/plugins/daterangepicker/daterangepicker.css', 'resources/assets/css/admin/daterangepicker.css');
+    mix.styles('admin/daterangepicker.css', 'public/css/admin/daterangepicker.css');
+    mix.copy('node_modules/bootstrap-sass/assets/fonts', 'public/css/fonts');
+
 });
 

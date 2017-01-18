@@ -5,3 +5,8 @@
 Homestead.json
 Homestead.yaml
 .env
+/public/build
+/public/css
+/public/js
+
+resources/assets/css/admin/daterangepicker.css

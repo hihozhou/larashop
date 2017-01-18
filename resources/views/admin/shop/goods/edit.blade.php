@@ -286,7 +286,7 @@
 
                                 <div class="col-md-12 margin10">
                                     <div class="col-md-2 text_right form_bar">
-                                        上架销售：{{$goods->is_sale}}
+                                        上架销售：
                                     </div>
                                     <div class="col-md-4">
                                         <div class="btn-group clearfix" data-toggle="buttons">
@@ -440,6 +440,10 @@
                                                 <span class="form_bar mb10 col-xs-12 small_text">上架</span>
                                                 <input type="checkbox" class="isSale"
                                                        @if($goodsDetail->is_sale==1) checked @endif>
+                                            </p>
+                                            <p class="col-xs-4 text-center">
+                                                <span class="form_bar mb10 col-xs-12 small_text"></span>
+                                                <button class="goodsSales btn btn-success"  data-id="{{$goodsDetail->id}}">特卖</button>
                                             </p>
                                         </div>
 
@@ -657,6 +661,18 @@
 
             ajax_go_1(ajaxData, "/admin/goods/{{$goods->id}}", onSave, 'PATCH');
         });
+
+        $(".goodsSales").on("click", function () {
+//            console.log($(this).attr('data-id'));
+//            return;
+            //TODO 获取最外层data-id
+            location.href = '/admin/sales/create?goods_detail_id=' + $(this).attr('data-id');
+        });
+
+        /**
+         * 保存后操作
+         * @param rsp
+         */
         function onSave(rsp) {
 
             if (rsp.error_code == 0) {

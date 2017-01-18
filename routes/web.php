@@ -48,7 +48,10 @@ Route::group(
             Route::get('/', 'GoodsSkuController@index');
             Route::resource('sku', 'GoodsSkuController');
             Route::resource('goods', 'GoodsController');
+            Route::put('goods/{id}/sell', 'GoodsController@sellChange');
             Route::post('/upload', 'UploadController@store');
+            Route::resource('sales', 'GoodsSalesController');
+            Route::post('sales/time/update', 'GoodsSalesController@timeUpdate');
 //            Route::get('{router?}', function ($router = null) {
 ////                echo "123";exit;
 //////                var_dump($router);
@@ -68,14 +71,14 @@ Route::group(
 /**
  * Wap group
  */
-Route::group(['namespace' => 'Home'], function () {
-    Route::get('/index', 'IndexController@index');
-    Route::get('/oauth', 'WechatController@oauth');
-    Route::group(['middleware' => ['home.auth']], function () {
-        Route::resource('user', 'UserController');
-    });
+Route::group(['namespace' => 'Shop'], function () {
+    Route::get('/', 'IndexController@index');
+//    Route::get('/oauth', 'WechatController@oauth');
+//    Route::group(['middleware' => ['home.auth']], function () {
+//        Route::resource('user', 'UserController');
+//    });
 });
-Route::get('/test', function (){
-   return  view('admin.test');
+Route::get('/test', function () {
+    return view('admin.test');
 });
 

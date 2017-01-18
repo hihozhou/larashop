@@ -24,4 +24,9 @@ class GoodsDetail extends Model
         return $this->hasOne('App\Models\Image', 'id', 'image_id');
     }
 
+    public function goods()
+    {
+        return $this->belongsTo('App\Models\Goods', 'goods_id', 'id');
+    }
+
 }

@@ -20,7 +20,7 @@ class GoodsSkuController extends BaseController
         $skus = GoodsSku::tree();
 //        print_r($list);exit;
 //        $list = GoodsSku::get()->toArray();
-        return view('admin.sku.index', ['skus' => $skus]);
+        return view('admin.shop.sku.index', ['skus' => $skus]);
 //        return $this->jsonSuccessResponse(['list' => $list]);
     }
 
@@ -32,7 +32,7 @@ class GoodsSkuController extends BaseController
     public function create()
     {
         //
-        return view('admin.sku.create');
+        return view('admin.shop.sku.create');
     }
 
     /**
@@ -86,7 +86,7 @@ class GoodsSkuController extends BaseController
     {
         //
         $sku = GoodsSku::findOrFail($id);
-        return view('admin.sku.edit', ['sku' => $sku]);
+        return view('admin.shop.sku.edit', ['sku' => $sku]);
     }
 
     /**

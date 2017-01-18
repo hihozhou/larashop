@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\BaseController;
 use App\Models\Goods;
 use App\Models\GoodsDetail;
+use App\Models\GoodsSales;
 use App\Models\GoodsSku;
 use App\Models\Image;
 use Illuminate\Http\Request;
@@ -19,13 +20,10 @@ class GoodsController extends BaseController
      */
     public function index()
     {
-        //
         $goodsList = Goods::with('banner_src')->get()->each(function ($goods) {
-//            //
             $goods->banner_src->url = Image::baseUrl($goods->banner_src->name);
-//            var_dump($goods->created_at);exit;
         });
-        return view('admin.goods.index', ['goodsList' => $goodsList]);
+        return view('admin.shop.goods.index', ['goodsList' => $goodsList]);
     }
 
     /**
@@ -35,10 +33,8 @@ class GoodsController extends BaseController
      */
     public function create()
     {
-        //
         $skus = GoodsSku::tree();
-
-        return view('admin.goods.create', ['skus' => $skus]);
+        return view('admin.shop.goods.create', ['skus' => $skus]);
     }
 
     /**
@@ -110,7 +106,7 @@ class GoodsController extends BaseController
                 $skus = $sku->childs;
             }
         }
-        return view('admin.goods.edit', [
+        return view('admin.shop.goods.edit', [
             'tree' => $tree,
             'goods' => $goods,
             'skus' => $skus,
@@ -174,5 +170,13 @@ class GoodsController extends BaseController
     public function destroy($id)
     {
         //
+    }
+
+    public function sellChange(Request $request, $id)
+    {
+        $sales = Goods::findOrFail($id);
+        $sales->is_sale = $request->is_sale;
+        $sales->save();
+        return $this->jsonSuccessResponse();
     }
 }
