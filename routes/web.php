@@ -51,6 +51,7 @@ Route::group(
             Route::put('goods/{id}/sell', 'GoodsController@sellChange');
             Route::post('/upload', 'UploadController@store');
             Route::resource('sales', 'GoodsSalesController');
+            Route::put('sales/{id}/sell', 'GoodsSalesController@sellChange');
             Route::post('sales/time/update', 'GoodsSalesController@timeUpdate');
 //            Route::get('{router?}', function ($router = null) {
 ////                echo "123";exit;

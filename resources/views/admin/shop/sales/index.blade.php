@@ -47,23 +47,25 @@
                             <tr>
                                 <td>{{$sales->id}}</td>
                                 <td>
-                                    <img src="{{\App\Models\Image::baseUrl($sales->detail->image_src->name)}}" width="60px" height="60px">
+                                    <img src="{{\App\Models\Image::baseUrl($sales->detail->image_src->name)}}"
+                                         width="60px" height="60px">
                                 </td>
                                 <td>
                                     {{$sales->detail->goods->name}}<br/>
                                     @foreach($sales->detail->skus as $sku)
-                                    -{{$sku->sku->name}}
+                                        -{{$sku->sku->name}}
                                     @endforeach
 
                                 </td>
                                 <td data-id="{{$sales->id}}">
-                                    @if($sales->is_sale==1)
-                                        <font color="green">上架</font> /
-                                        <button href="javascript:void(0)" class="is_sale" data-val="0">下架</button>
-                                    @else
-                                        <button href="javascript:void(0)" class="is_sale" data-val="1">上架</button> /
-                                        <font color="red">下架</font>
-                                    @endif
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-success is_sale" data-val="1"
+                                                @if($sales->is_sale==1) disabled @endif>上架
+                                        </button>
+                                        <button type="button" class="btn btn-danger is_sale" data-val="0"
+                                                @if($sales->is_sale==0) disabled @endif>下架
+                                        </button>
+                                    </div>
                                 </td>
                                 <td>{{$sales->created_at}}</td>
                                 <td data-id="{{$sales->id}}">
@@ -133,5 +135,30 @@
             }
             location.href = '/admin/sales/' + id + '/edit';
         });
+
+        $(".is_sale").click(function () {
+            var id = $(this).closest("td").attr("data-id");
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: "/admin/sales/" + id + '/sell',
+                type: 'PUT',
+                data: {
+                    is_sale: $(this).attr("data-val")
+                },
+                success: function (response) {
+                    if (response.error_code == 0) {
+                        show_stack_success('售卖状态更改成功', response);
+                        window.location.reload();
+                    } else {
+                        show_stack_error('售卖状态更改失败', response);
+                    }
+                }, error: function () {
+                    show_stack_error();
+                }
+            });
+        });
+
     </script>
 @endsection

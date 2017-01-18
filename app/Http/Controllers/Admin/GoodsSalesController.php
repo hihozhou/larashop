@@ -158,4 +158,12 @@ class GoodsSalesController extends BaseController
 //        return $this->jsonFailResponse('找不到.env文件');
     }
 
+    public function sellChange(Request $request, $id)
+    {
+        $sales = GoodsSales::findOrFail($id);
+        $sales->is_sale = $request->is_sale;
+        $sales->save();
+        return $this->jsonSuccessResponse();
+    }
+
 }
