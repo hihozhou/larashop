@@ -17,7 +17,7 @@ class CreateWechatFanInfosTable extends Migration
             $table->integer('user_id')->comment('用户id,主键');
             $table->primary('user_id');
             $table->string('nickname',100)->nullable()->comment('nickname');
-            $table->enum('sex', ['0','1'])->comment('性别,0是女,1是男');
+            $table->tinyInteger('sex')->comment('性别,0是女,1是男');
             $table->string('country',30)->nullable()->comment('国家');
             $table->string('province',30)->nullable()->comment('省份');
             $table->string('city',30)->nullable()->comment('城市');
