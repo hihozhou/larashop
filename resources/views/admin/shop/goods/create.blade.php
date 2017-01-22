@@ -411,7 +411,7 @@
                             </div>
                             <div class="col-md-12 margin10">
                                 <div class="col-md-2 text_right form_bar">
-                                    <button type="button" id="uploadSilderImg" class="btn btn-primary btn-sm">
+                                    <button type="button" id="uploadSliderImg" class="btn btn-primary btn-sm">
                                         上传商品轮播图
                                     </button>
                                     ：
@@ -419,7 +419,7 @@
                                 <div class="col-md-10">
                                     <div id="showPicDiv" class=" padding0 margin10">
 
-                                        {{--<volist name="silderArr" id="vo">--}}
+                                        {{--<volist name="sliderArr" id="vo">--}}
 
                                         {{--<div id="item_{$i - 1}" class="item_pic_mom">--}}
                                         {{--<div class="item_pic_left">--}}
@@ -487,14 +487,14 @@
             }
         }
         /* 上传轮播图 */
-        $("#uploadSilderImg").on("click", function () {
+        $("#uploadSliderImg").on("click", function () {
             $('#fileupload').trigger('click');
-            upload_img_1('/admin/upload', 'fileupload', onUploadSilder);
+            upload_img_1('/admin/upload', 'fileupload', onUploadSlider);
             /*第一个参数：上传图片的路径,第二个参数：file_input标签id,第三个参数：回调函数*/
         });
 
         /*上传轮播图之后回调*/
-        function onUploadSilder(rsp) {
+        function onUploadSlider(rsp) {
             if (rsp.error_code == 0) {
                 uploadPicSucceed(rsp.data.id, rsp.data.url, rsp.data.url, "showPicDiv", 290, 290);
             } else {
@@ -510,9 +510,9 @@
             var banner = $.trim($("#banner").val()); // 主图
             var isSale = $(":radio[name='isSale']:checked").val();
             var sku_top_id = $("#sku_def").val();
-            var silder = [];// 轮播图
+            var slider = [];// 轮播图
             picJson.path.forEach(function (value, index, array) {
-                silder.push(index);
+                slider.push(index);
             });
 
             if (name == '' || name == undefined) {
@@ -527,15 +527,15 @@
                 rt = false;
                 $('#banner').focus();
                 swal('请上传商品主图', '', 'warning');
-            } else if (silder.join(',') == '') {
+            } else if (slider.join(',') == '') {
                 rt = false;
                 swal('请上传轮播图', '', 'warning');
             } else if (sku_top_id <= 0) {
                 rt = false;
                 swal('请选择sku商品类型', '', 'warning');
             }
-            console.log(silder);
-            console.log(silder.join(','));
+            console.log(slider);
+            console.log(slider.join(','));
 
             return rt;
 
@@ -561,11 +561,11 @@
 //            ajaxData.salePrice = $("#salePrice").val();
             ajaxData.is_sale = $(":radio[name='isSale']:checked").val();
 
-            var silder = [];// 轮播图
+            var slider = [];// 轮播图
             picJson.path.forEach(function (value, index, array) {
-                silder.push(index);
+                slider.push(index);
             });
-            ajaxData.silder = silder.join(',');
+            ajaxData.slider = slider.join(',');
 
             ajaxData.details = []; // sku组合列表
             $('.skuBanner').each(function (index) {

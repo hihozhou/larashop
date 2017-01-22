@@ -56,7 +56,15 @@ class GoodsController extends BaseController
         if ($validator->fails()) {
             return $this->jsonFailResponse($validator->errors()->first());
         }
-//        Goods::creat
+        $skuIds = [];
+        foreach (array_pluck($data['details'], 'sku_id_str') as $skuIdStr) {
+            $skuIds[] = explode(',', $skuIdStr);
+        }
+        $sku_type_id_arr = GoodsSku::whereIn('id', array_collapse($skuIds))->get()->pluck('pid')->unique()->toArray();
+        if (count($sku_type_id_arr) < 1) {
+            return $this->jsonFailResponse('至少一种sku类型');
+        }
+        $data['sku_type_ids'] = implode(',', $sku_type_id_arr);
         try {
             \DB::transaction(function () use ($data) {
                 $goods = Goods::create($data);
@@ -134,6 +142,15 @@ class GoodsController extends BaseController
         if ($validator->fails()) {
             return $this->jsonFailResponse($validator->errors()->first());
         }
+        $skuIds = [];
+        foreach (array_pluck($data['details'], 'sku_id_str') as $skuIdStr) {
+            $skuIds[] = explode(',', $skuIdStr);
+        }
+        $sku_type_id_arr = GoodsSku::whereIn('id', array_collapse($skuIds))->get()->pluck('pid')->unique()->toArray();
+        if (count($sku_type_id_arr) < 1) {
+            return $this->jsonFailResponse('至少一种sku类型');
+        }
+        $data['sku_type_ids'] = implode(',', $sku_type_id_arr);
         try {
             \DB::transaction(function () use ($id, $data) {
 //            $goods = new Goods();

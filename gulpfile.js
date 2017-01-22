@@ -42,5 +42,17 @@ elixir(mix => {
     mix.styles('admin/daterangepicker.css', 'public/css/admin/daterangepicker.css');
     mix.copy('node_modules/bootstrap-sass/assets/fonts', 'public/css/fonts');
 
+    mix.sass('shop/app.scss', 'public/css/shop/app.css');
+    mix.styles('shop/base.css', 'public/css/shop/base.css');
+    mix.styles('shop/iosOverlay.css', 'public/css/shop/iosOverlay.css');
+    mix.styles('shop/goods.css', 'public/css/shop/goods.css');
+    mix.scripts('shop/swiper.jquery.min.js', 'public/js/shop/swiper.jquery.min.js');
+    mix.scripts('shop/fastclick.js', 'public/js/shop/fastclick.js');
+    mix.scripts('shop/spin.min.js', 'public/js/shop/spin.min.js');
+    mix.scripts('shop/iosOverlay.js', 'public/js/shop/iosOverlay.js');
+    mix.scripts('shop/goods.js', 'public/js/shop/goods.js');
+    mix.scripts('shop/myc.js', 'public/js/shop/myc.js');
+    mix.copy('resources/assets/images/shop/*', 'public/images/shop/');
+
 });
 

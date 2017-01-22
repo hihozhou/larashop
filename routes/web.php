@@ -37,7 +37,7 @@ Route::group(
     function () {
         Route::get('login', 'LoginController@showLoginForm')->name('admin.login');
         Route::post('login', 'LoginController@login');
-        Route::post('logout', 'LoginController@logout')->name('admin.logout');
+        Route::get('logout', 'LoginController@logout')->name('admin.logout');
 
         /*
         |--------------------------------------------------------------------------
@@ -74,6 +74,13 @@ Route::group(
  */
 Route::group(['namespace' => 'Shop'], function () {
     Route::get('/', 'IndexController@index');
+    Route::get('/goods/{id}', 'IndexController@goods');
+    Route::get('/cart', 'CartController@index');
+    Route::post('/login/code', 'AuthController@code')->name('shop.login.code');
+    Route::post('/login', 'AuthController@login')->name('shop.login');
+    Route::group(['middleware' => ['home.auth']], function () {
+        Route::post('/cart', 'CartController@store')->name('shop.cart.store');
+    });
 //    Route::get('/oauth', 'WechatController@oauth');
 //    Route::group(['middleware' => ['home.auth']], function () {
 //        Route::resource('user', 'UserController');

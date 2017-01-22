@@ -68,19 +68,19 @@
 }
 #footer #home
 {
-    background:url("../../images/shop/home.png") no-repeat center center;
+    background:url("/images/shop/home.png") no-repeat center center;
     background-size: 40px 37px;
 }
 #footer #home span
 {
     height:35px;
     margin-top: 5px;
-    background: url("../../images/shop/foot_border.png") no-repeat right center;
+    background: url("/images/shop/foot_border.png") no-repeat right center;
     background-size: 1px 30px;
 
 }
 #footer #cart
 {
-    background:url("../../images/shop/cart.png") no-repeat center center;
+    background:url("/images/shop/cart.png") no-repeat center center;
     background-size: 40px 37px;
 }

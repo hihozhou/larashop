@@ -19,15 +19,11 @@ class Authenticate
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->guest()) {
-            if ($this->isWechat()) {
-                //跳转到微信授权链接
-                return $this->wechatAuthorized();
+            if ($request->ajax() || $request->wantsJson()) {
+//                return response('Unauthorized.', 401);
+                return response()->apiJson(401, '请登录', new \stdClass());
             } else {
-                if ($request->ajax() || $request->wantsJson()) {
-                    return response('Unauthorized.', 401);
-                } else {
-                    return redirect('/login');
-                }
+                return redirect('/login');
             }
         }
         return $next($request);

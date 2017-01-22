@@ -15,12 +15,12 @@ require('bootstrap-sass');
  * and simple, leaving you to focus on building your next great project.
  */
 
-window.Vue = require('vue');
-require('vue-resource');
+//window.Vue = require('vue');
+//require('vue-resource');
 
 //引入vue 路由
-window.VueRouter = require('vue-router');//引入
-Vue.use(VueRouter);//使用
+//window.VueRouter = require('vue-router');//引入
+//Vue.use(VueRouter);//使用
 
 /**
  * We'll register a HTTP interceptor to attach the "CSRF" header to each of
@@ -28,11 +28,11 @@ Vue.use(VueRouter);//使用
  * included with Laravel will automatically verify the header's value.
  */
 
-Vue.http.interceptors.push((request, next) => {
-    request.headers.set('X-CSRF-TOKEN', Laravel.csrfToken);
-
-    next();
-});
+//Vue.http.interceptors.push((request, next) => {
+//    request.headers.set('X-CSRF-TOKEN', Laravel.csrfToken);
+//
+//    next();
+//});
 
 /**
  * Echo exposes an expressive API for subscribing to channels and listening
