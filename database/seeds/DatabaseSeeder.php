@@ -11,9 +11,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-         $this->call(UsersTableSeeder::class);
-         $this->call(GoodsSkusTableSeeder::class);
-         $this->call(ImagesTableSeeder::class);
+        $this->call(UsersTableSeeder::class);
+        $this->call(GoodsSkusTableSeeder::class);
+        $this->call(ImagesTableSeeder::class);
     }
 }
 
@@ -78,9 +78,30 @@ class GoodsSkusTableSeeder extends Seeder
             'name' => "128g",
             'pid' => 5,
         ));
+        DB::table('goods_skus')->insert(array(
+            'id' => 9,
+            'name' => "颜色",
+            'pid' => 1,
+        ));
+        DB::table('goods_skus')->insert(array(
+            'id' => 10,
+            'name' => "金色",
+            'pid' => 9,
+        ));
+        DB::table('goods_skus')->insert(array(
+            'id' => 11,
+            'name' => "黑色",
+            'pid' => 9,
+        ));
+        DB::table('goods_skus')->insert(array(
+            'id' => 12,
+            'name' => "白色",
+            'pid' => 9,
+        ));
 
     }
 }
+
 class ImagesTableSeeder extends Seeder
 {
     public function run()

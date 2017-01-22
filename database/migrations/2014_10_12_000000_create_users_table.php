@@ -19,9 +19,9 @@ class CreateUsersTable extends Migration
             $table->string('phone',11)->unique()->nullable()->default(NULL)->comment('手机号码');
             $table->string('email')->unique()->nullable()->default(NULL)->comment('绑定的邮箱');
             $table->string('unionid',255)->unique()->nullable()->default(NULL)->comment('unionid,微信登录账户id');
-            $table->string('password');
+            $table->string('password')->nullable()->default(NULL);
             $table->string('nickname',32)->nullable()->default(NULL)->comment('昵称');
-            $table->tinyInteger('sex')->comment('性别,0是女,1是男');
+            $table->tinyInteger('sex')->nullable()->default(NULL)->comment('性别,0是女,1是男');
             $table->rememberToken();
             $table->timestamps();
         });
