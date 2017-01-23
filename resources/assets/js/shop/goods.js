@@ -101,7 +101,7 @@ $(document).ready(function () {
                     var ajaxData = {};
                     ajaxData.goods_detail_id = pubs.chooseGoodsDetailId;
                     ajaxData.num = $.trim($('.counted').html());
-                    pubs.ajax_go(ajaxData, cart_url, function () {
+                    pubs.ajax_go(ajaxData, add_cart_url, function () {
                     }, true, '加入购物车成功');
                 }
             });
@@ -122,8 +122,8 @@ $(document).ready(function () {
                     var ajaxData = {};
                     ajaxData.goods_detail_id = pubs.chooseGoodsDetailId;
                     ajaxData.num = $.trim($('.restNum').html());
-                    pubs.ajax_go(ajaxData, cart_url, function () {
-                        window.location.href = buy_now_url;
+                    pubs.ajax_go(ajaxData, add_cart_url, function () {
+                        window.location.href = cart_url;
                     }, true);
                 }
             });

@@ -358,7 +358,7 @@
             <span class="col-xs-12">
             </span>
     </a>
-    <a href='{:U("WechatWeb/Shop/cart")}' class="col-xs-6" id="cart">
+    <a href='{{route('shop.cart.index')}}' class="col-xs-6" id="cart">
     </a>
 </div>
 
@@ -370,8 +370,9 @@
     console.log(skus);
     var goodsDetails = JSON.parse('{!! $goods->details->toJson()!!}');//商品详情列表
     console.log(goodsDetails);
-    var cart_url = '{{ route('shop.cart.store')}}';
+    var add_cart_url = '{{ route('shop.cart.store')}}';
     var loading_url = '/images/shop/';
+    var cart_url = '{{route('shop.cart.index')}}';
 
     //关闭绑定手机号码蒙层
     $('.loginForm').click(function (e) {

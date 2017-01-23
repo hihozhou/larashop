@@ -14,4 +14,9 @@ class Cart extends Model
         'user_id', 'goods_detail_id', 'num'
     ];
 
+    public function goods_detail()
+    {
+        return $this->hasOne('App\Models\GoodsDetail', 'id', 'goods_detail_id');
+    }
+
 }

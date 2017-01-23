@@ -17,7 +17,19 @@ class CartController extends BaseController
      */
     public function index()
     {
-        return view('shop.cart');
+        //TODO 加入just参数
+        $user = \Auth::user();
+        $cartGoodsList = Cart::with([
+            'goods_detail' => function ($query) {
+                $query->with('image_src');
+                $query->with('goods');
+                $query->with('skus.sku');
+            },
+        ])->where(['user_id' => $user->id])
+            ->orderBy('updated_at', 'DESC')->get();
+//        var_dump($cartGoodsList->toArray());
+//        return;
+        return view('shop.cart', ['cartGoodsList' => $cartGoodsList]);
     }
 
     /**
@@ -118,17 +130,54 @@ class CartController extends BaseController
      */
     public function destroy($id)
     {
-        //
+        $cartGoods = Cart::where('user_id', \Auth::user()->id)->findOrFail($id);
+        $cartGoods->delete();
+        return $this->jsonSuccessResponse();
     }
 
 
-    public function add(Request $request, $id, $num)
+    public function add(Request $request)
     {
+        $data = $request->all();
+        $validator = \Validator::make($data, [
+            'num' => 'required|min:1',
+            'goods_detail_id' => 'required|exists:goods_details,id,deleted_at,NULL,stock,!0,is_sale,1',
+        ]);
+        if ($validator->fails()) {
+            return $this->jsonFailResponse($validator->errors()->first());
+        }
+        $user = \Auth::user();
+        $cartGoods = Cart::where('user_id', $user->id)
+            ->where('goods_detail_id', $request->goods_detail_id)->firstOrFail();
+        $goodsDetail = GoodsDetail::where('id', $request->goods_detail_id)->firstOrFail();
+
+        if ($cartGoods->num + $request->num > $goodsDetail->stock) {
+            return $this->jsonFailResponse('库存不足');
+        }
+        $cartGoods->num = $cartGoods->num + $request->num;
+        $cartGoods->save();
+        return $this->jsonSuccessResponse();
 
     }
 
-    public function subtract(Request $request, $id, $num)
+    public function subtract(Request $request)
     {
-
+        $data = $request->all();
+        $validator = \Validator::make($data, [
+            'num' => 'required|min:1',
+            'goods_detail_id' => 'required|exists:goods_details,id,deleted_at,NULL,stock,!0,is_sale,1',
+        ]);
+        if ($validator->fails()) {
+            return $this->jsonFailResponse($validator->errors()->first());
+        }
+        $user = \Auth::user();
+        $cartGoods = Cart::where('user_id', $user->id)
+            ->where('goods_detail_id', $request->goods_detail_id)->firstOrFail();
+        $cartGoods->num = $cartGoods->num - $request->num;
+        if ($cartGoods->num == 0) {
+            return $this->jsonFailResponse('已经没有了');
+        }
+        $cartGoods->save();
+        return $this->jsonSuccessResponse();
     }
 }

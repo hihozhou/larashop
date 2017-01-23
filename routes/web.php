@@ -80,6 +80,10 @@ Route::group(['namespace' => 'Shop'], function () {
     Route::post('/login', 'AuthController@login')->name('shop.login');
     Route::group(['middleware' => ['home.auth']], function () {
         Route::post('/cart', 'CartController@store')->name('shop.cart.store');
+        Route::get('/cart', 'CartController@index')->name('shop.cart.index');
+        Route::put('/cart/add', 'CartController@add')->name('shop.cart.add');
+        Route::put('/cart/subtract', 'CartController@subtract')->name('shop.cart.subtract');
+        Route::delete('/cart/{id}', 'CartController@destroy')->name('shop.cart.destroy');
     });
 //    Route::get('/oauth', 'WechatController@oauth');
 //    Route::group(['middleware' => ['home.auth']], function () {

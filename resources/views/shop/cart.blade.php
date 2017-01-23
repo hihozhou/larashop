@@ -11,15 +11,12 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-
     <!-- Styles -->
     <link href="{{ elixir('css/shop/app.css')}}" rel="stylesheet">
     <link rel="stylesheet" href="{{ elixir('css/shop/base.css')}}"/>
     <link rel="stylesheet" href="{{ elixir('css/shop/common.css')}}"/>
-    <link rel="stylesheet" href="{{ elixir('css/shop/swiper.css')}}"/>
-    <link rel="stylesheet" href="{{ elixir('css/shop/index.css')}}"/>
     <link rel="stylesheet" href="{{ elixir('css/shop/iosOverlay.css')}}"/>
-    <link rel="stylesheet" href="{{ elixir('css/shop/goods.css')}}"/>
+    <link rel="stylesheet" href="{{ elixir('css/shop/cart.css')}}"/>
 
     <!-- Scripts -->
     <script>
@@ -27,225 +24,101 @@
                 'csrfToken' => csrf_token(),
         ]); ?>
     </script>
-
-    <style>
-        img {
-            width: auto !important;
-        }
-
-        .img1 {
-            height: 8px;
-            position: relative;
-            bottom: 8px;
-            left: -3px;
-
-        }
-
-        .img2 {
-            height: 19px;
-            position: relative;
-            bottom: 1px;
-            left: -2px
-
-        }
-
-        #detail_goods img {
-            width: 100%;
-        }
-
-        #data_goods img {
-            width: 100%;
-        }
-
-        .swiper-slide {
-            height: 200px !important;
-        }
-
-        .swiper-slide a {
-            height: 100% !important;
-            overflow: hidden;
-        }
-
-        .swiper-slide img {
-            /*height: 200px !important;*/
-        }
-
-        .col-xs-6 {
-            padding-left: 0px;
-        }
-
-        .btn-warning {
-            background-color: #ffd400;
-            border-color: #ffd400;
-        }
-    </style>
-
-    <script type="text/javascript">
-        //图片居中显示
-        function center_img(dom) {
-            dom.style.visibility = 'hidden';
-            var pWideth = dom.parentNode.offsetWidth;
-            var pHeight = dom.parentNode.offsetHeight;
-            var Wideth = dom.width;
-            var Height = dom.height;
-//            console.log(pWideth + ":" + pHeight)
-//            console.log(Wideth + ":" + Height)
-            if (Wideth >= Height) {
-                dom.width = pWideth;
-                if (dom.height >= pHeight) {
-//                    console.log(dom.width + "--" + pHeight + "-dsd-" + dom.height)
-                    dom.width = dom.width * pHeight / dom.height;
-                    dom.height = pHeight;
-                }
-            } else {
-                dom.height = pHeight;
-                if (dom.width >= pWideth) {
-
-                    dom.height = dom.height * pWideth / dom.width;
-                    dom.width = pWideth;
-                }
-//                console.log(dom.width + ":" + dom.height + "----------")
-            }
-            dom.style.marginLeft = (pWideth - dom.width) / 2 + 'px';
-            dom.style.marginTop = (pHeight - dom.height) / 2 + 'px';
-            dom.style.visibility = 'visible';
-
-        }
-    </script>
-
 </head>
 
 <body>
-<div class="swiper-container">
-    <div class="swiper-wrapper">
-        @foreach($goods->slider_src_list() as $slider_src)
-            <div class="swiper-slide">
-                <a href="javascript:void(0)">
-                    <img src="{{\App\Models\Image::baseUrl($slider_src->name)}}" class="img" alt=""
-                         onload="center_img(this)"/>
-                </a>
-            </div>
-        @endforeach
-    </div>
-    <div class="swiper-pagination"></div>
-</div>
-<h3 class="detail_text">
-    {{$goods->name}}
-</h3>
 
-<div class="goods_detail_wrapper">
-    <h4 class="price_wraper">
-            <span class="red">
-                ￥
-            </span>
-            <span class="red goods_price">
-                {{$goods->min_price->price}}~{{$goods->max_price->price}}
-            </span>
-             <span class="red">
-            元
-            </span>
-            <span class="market_price">
-{{--                市场价：￥{{$goods->min_original_price->price}}~{{$goods->max_original_price->price}}--}}
-            </span>
-    </h4>
-    <div class="sku_wraper clearfix">
-        <p class="sku_title">颜色</p>
-        <div class="sku_list_inner clearfix">
-                        <span class="sku_block pull-left">
-                            红色
-                        </span>
-                        <span class="sku_block pull-left">
-                            黑色
-                        </span>
-        </div>
-        <p class="sku_title">颜色</p>
-        <div class="sku_list_inner clearfix">
-                        <span class="sku_block pull-left">
-                            红色
-                        </span>
-                        <span class="sku_block pull-left">
-                            黑色
-                        </span>
-        </div>
-    </div>
-
-    <div class="goods_count">
-        <p class="sku_title">数量</p>
-        <div class="clearfix goods_count_wraper">
-            <a href="javascript:void(0)" class="count_btn minus_count pull-left">
-                <img src="{{ elixir('images/shop/minus_count.png')}}" class="img1" alt=""/>
+<div class="cart_wrapper clearfix">
+    @foreach($cartGoodsList as $cartGoods)
+        <div class="cart_list col-xs-12" data-id="{{$cartGoods->id}}"
+             data-goods-detail-id="{{$cartGoods->goods_detail_id}}"
+             data-goods-detail-price="{{$cartGoods->goods_detail->price}}">
+            <a href="javascript:void(0)" class="cart_img">
+                <img src="{{\App\Models\Image::baseUrl($cartGoods->goods_detail->image_src->name)}}" class="img"
+                     alt=""/>
             </a>
+            <div class="col-xs-12">
+                <h3 class="cart_title">{{$cartGoods->goods_detail->goods->name}}</h3>
+                <div class="block_wraper clearfix">
+                    @foreach($cartGoods->goods_detail->skus as $sku)
+                        <span class="pull-left">
+                        	{{$sku->sku->name}}
+                    </span>
+                    @endforeach
+                </div>
+                <p class="red price_wraper">
+                    <span class="red">
+                        单价 : ￥
+                    </span>
+                    <span class="red goods_price">
+                        {{$cartGoods->goods_detail->price}}
+                    </span>
+                    {{--<span class="red">--}}
+                        {{--总价:￥--}}
+                    {{--</span>--}}
+                    {{--<span class="red goods_price">--}}
+                        {{--{{$cartGoods->goods_detail->price}}--}}
+                    {{--</span>--}}
+
+                </p>
+                <div class="clearfix goods_count_wraper">
+                    <a href="javascript:void(0)" class="count_btn minus_count pull-left can">
+                        <img src="{{ elixir('images/shop/minus_count.png')}}" class="img" alt=""/>
+                    </a>
                 <span class="counted pull-left">
-                1
+                {{$cartGoods->num}}
                 </span>
-            <a href="javascript:void(0)" class="count_btn add_count pull-left">
-                <img src="{{ elixir('images/shop/add_count.png')}}" class="img2" alt=""/>
-            </a>
-                 <span class="pull-left" style="padding:5px 3px;">(库存
-                <span class="restNum">{{$goods->stock()}}</span>
-                件)
-        </span>
+                    <a href="javascript:void(0)" class="count_btn add_count pull-left can">
+                        <img src="{{ elixir('images/shop/add_count.png')}}" class="img" alt=""/>
+                    </a>
+                </div>
+            </div>
+            <div class="cart_list_delete">
+
+            </div>
+            @if(property_exists($cartGoods,'error_msg'))
+                <p class="text-danger col-xs-12 pt5">
+                    错误信息：{{$cartGoods->error_msg}}
+                </p>
+            @endif
         </div>
-
-    </div>
+    @endforeach
 </div>
 
-<div class="buy_wraper clearfix">
-    <div class="col-xs-6 pr10">
-        <a href="javascript:void(0)" class="btn btn-sm btn-warning" id="buy_now">
-            立即购买
-        </a>
-    </div>
-
-    <div class="col-xs-6 pl10">
-        <a href="javascript:void(0)" class="btn btn-sm btn-warning" id="go_cart">
-            加入购物车
-        </a>
-    </div>
-
-
-</div>
-
-<div class="site_banner pull-left">
-    <span class="pull-left active goods_qie" data-id="detail_goods">商品详情</span>
-    <span class="pull-left goods_qie" data-id="data_goods">商品参数</span>
-</div>
-
-<div class="clearfix">
-    <!--商品详情-->
-    <div class="col-xs-12 " id="detail_goods" style="padding:0 0">
-        {!! $goods->content !!}
-    </div>
-    <!--商品参数-->
-    <div class="col-xs-12 " id="data_goods" style="padding:10px 0">
-        <p>
-            {!! $goods->description !!}
-        </p>
-    </div>
-
-</div>
-
-<div id="footer" class="col-xs-12">
-    {{--<div class=" btn-group">--}}
-    {{--<button type="button" class="btn btn-warning edit">购买</button>--}}
-    {{--<button type="button" class="btn btn-warning ">购买</button>--}}
-    {{--</div>--}}
-
-    <a href='{{url('/')}}' class="col-xs-6" id="home">
-            <span class="col-xs-12">
+<div class="cart_foot">
+        <span class="cart_foot_text pull-left">
+            数量：<span class="total_count">
+                {{$cartGoodsList->sum(function($cartGoods){return $cartGoods->num;})}}
+            </span>件&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;总额：￥<span class="total_price">
+                {{$cartGoodsList->sum(function ($cartGoods) {
+                    return $cartGoods->goods_detail->price*$cartGoods->num;
+                })}}
             </span>
-    </a>
-    <a href='{:U("WechatWeb/Shop/cart")}' class="col-xs-6" id="cart">
+        </span>
+    <a href='{:U("WechatWeb/Shop/shopAddress")}' class="btn-sm btn btn-warning pull-right" id="buy_now">
+        立即结算
     </a>
 </div>
 
+{{--<div class="order_wrapper" style="background: #ffffff;margin-top: 60px;padding-bottom: 30px;display: none;">--}}
+{{--<div style="width:90px;margin:0px auto;padding:20px 0px 10px 0px;" class="clearfix">--}}
+{{--<img src="__STATICS__/mobile/images/shop/sad.png" class="img" alt=""/>--}}
+{{--</div>--}}
+{{--<h3 style="text-align: center;color:#656565;">购物车为空！</h3>--}}
+
+
+{{--<div style="width:40%;margin:10px auto 10px;" class="clearfix">--}}
+{{--<a href="javascript:void(0)" class="btn btn-sm btn-warning">--}}
+{{--返回首页--}}
+{{--</a>--}}
+{{--</div>--}}
+{{--</div>--}}
 
 <script>
-    var skus = JSON.parse('{!! $goods->sku_types()->toJson()!!}');//商品sku组合
-    console.log(skus);
-    var goodsDetails = JSON.parse('{!! $goods->details->toJson()!!}');//商品详情列表
-    console.log(goodsDetails);
-
+    var cart_goods_add = '{{route('shop.cart.add')}}';
+    var cart_goods_subtract = '{{route('shop.cart.subtract')}}';
+    var cart_goods_delete = '/cart/';
+    var loading_url = '/images/shop/';
 </script>
 
 {{-- jQuery --}}
@@ -257,6 +130,6 @@
 <script src="{{ elixir('js/shop/fastclick.js')}}"></script>
 <script src="{{ elixir('js/shop/spin.min.js')}}"></script>
 <script src="{{ elixir('js/shop/iosOverlay.js')}}"></script>
-<script src="{{ elixir('js/shop/goods.js')}}"></script>
+<script src="{{ elixir('js/shop/cart.js')}}"></script>
 </body>
 </html>
