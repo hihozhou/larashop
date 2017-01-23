@@ -94,12 +94,13 @@ $(document).ready(function () {
                 }
                 else if ($.trim($('.restNum').html()) == 0) {
                     alert('库存为0！');
+                } else if (pubs.chooseGoodsDetailId == null) {
+                    alert('请选择有效的商品');
                 }
                 else {
                     var ajaxData = {};
-                    ajaxData.action = 'add';
+                    ajaxData.goods_detail_id = pubs.chooseGoodsDetailId;
                     ajaxData.num = $.trim($('.counted').html());
-                    ajaxData.skuID = pubs.skuID;
                     pubs.ajax_go(ajaxData, cart_url, function () {
                     }, true, '加入购物车成功');
                 }
@@ -115,12 +116,12 @@ $(document).ready(function () {
                 }
                 else if ($.trim($('.restNum').html()) == 0) {
                     alert('库存为0！');
-                }
-                else {
+                } else if (pubs.chooseGoodsDetailId == null) {
+                    alert('请选择有效的商品');
+                } else {
                     var ajaxData = {};
-                    ajaxData.action = 'add';
-                    ajaxData.num = $.trim($('.counted').html());
-                    ajaxData.skuID = pubs.skuID;
+                    ajaxData.goods_detail_id = pubs.chooseGoodsDetailId;
+                    ajaxData.num = $.trim($('.restNum').html());
                     pubs.ajax_go(ajaxData, cart_url, function () {
                         window.location.href = buy_now_url;
                     }, true);
@@ -218,7 +219,7 @@ $(document).ready(function () {
             //}
         };
 
-        pubs.ajax_go = function (data, url, func, goOn, successText) {
+        pubs.ajax_go = function (ajaxData, url, func, goOn, successText) {
             var opts = {
                 lines: 13, // The number of lines to draw
                 length: 12, // The length of each line
@@ -250,18 +251,20 @@ $(document).ready(function () {
                 },
                 url: url,
                 type: "post",
-                data: data,
+                data: ajaxData,
                 success: function (data) {
+                    console.log(data);
                     if (data.error_code === 0) {
+                        console.log(func);
                         if (func != undefined)
                             func(data);
-
+                        console.log(goOn);
                         if (goOn == undefined) {
-
                             setTimeout(function () {
                                 window.location.reload();
                             }, 2000);
                         }
+
                         setTimeout(function () {
                             overlay.hide();
                         }, 2000);

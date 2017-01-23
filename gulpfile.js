@@ -52,7 +52,8 @@ elixir(mix => {
     mix.scripts('shop/iosOverlay.js', 'public/js/shop/iosOverlay.js');
     mix.scripts('shop/goods.js', 'public/js/shop/goods.js');
     mix.scripts('shop/myc.js', 'public/js/shop/myc.js');
-    mix.copy('resources/assets/images/shop/*', 'public/images/shop/');
+    mix.copy('resources/assets/images/shop', 'public/images/shop');
+    //mix.copy('resources/assets/images/shop/*', 'public/images/shop/');
 
 });
 

@@ -371,6 +371,7 @@
     var goodsDetails = JSON.parse('{!! $goods->details->toJson()!!}');//商品详情列表
     console.log(goodsDetails);
     var cart_url = '{{ route('shop.cart.store')}}';
+    var loading_url = '/images/shop/';
 
     //关闭绑定手机号码蒙层
     $('.loginForm').click(function (e) {

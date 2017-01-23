@@ -79,6 +79,7 @@ class GoodsController extends BaseController
 //            $goods->details()->createMany($data['details']);
             });
         } catch (\Exception $e) {
+//            throw  $e;
             return $this->jsonFailResponse('插入数据库失败');
         }
         return $this->jsonSuccessResponse();
@@ -175,7 +176,6 @@ class GoodsController extends BaseController
             return $this->jsonFailResponse('插入数据库失败');
         }
         return $this->jsonSuccessResponse();
-
     }
 
     /**

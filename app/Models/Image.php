@@ -10,6 +10,13 @@ use Qiniu\Storage\UploadManager;
 class Image extends Model
 {
 
+    /**
+     * TODO 使用文件系统
+     */
+
+    /**
+     * @var array
+     */
     protected $fillable = [
         'name'
     ];
