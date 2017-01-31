@@ -63,6 +63,7 @@ class Kernel extends HttpKernel
          *
          */
         'home.auth' => \App\Http\Middleware\Home\Authenticate::class,
+        'home.guest' => \App\Http\Middleware\Home\RedirectIfAuthenticated::class,
 
     ];
 }

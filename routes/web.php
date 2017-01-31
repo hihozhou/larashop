@@ -15,6 +15,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::auth();
+
 //Auth::routes();
 
 //Route::get('/home', 'HomeController@index');
@@ -69,21 +71,37 @@ Route::group(
     }
 );
 
+//Route::group(['namespace' => 'Home'], function () {
+//    Route::group(['middleware' => ['home.auth']], function () {
+//        Route::get('/user', 'UserController@index')->name('home.user.index');
+//    });
+//});
+
 /**
  * Wap group
  */
-Route::group(['namespace' => 'Shop'], function () {
-    Route::get('/', 'IndexController@index');
-    Route::get('/goods/{id}', 'IndexController@goods');
+Route::group(['namespace' => 'Home'], function () {
+    Route::get('/', 'IndexController@index')->name('home.index');
+    Route::get('/goods/{id}', 'IndexController@goods')->name('home.goods.show');
     Route::get('/cart', 'CartController@index');
-    Route::post('/login/code', 'AuthController@code')->name('shop.login.code');
-    Route::post('/login', 'AuthController@login')->name('shop.login');
+    Route::post('/login/code', 'AuthController@code')->name('home.login.code');
+    Route::post('/login', 'AuthController@login')->name('home.login');
+    Route::get('/login', 'AuthController@showLoginForm')->name('home.login')->middleware(['home.guest']);;
     Route::group(['middleware' => ['home.auth']], function () {
-        Route::post('/cart', 'CartController@store')->name('shop.cart.store');
-        Route::get('/cart', 'CartController@index')->name('shop.cart.index');
-        Route::put('/cart/add', 'CartController@add')->name('shop.cart.add');
-        Route::put('/cart/subtract', 'CartController@subtract')->name('shop.cart.subtract');
-        Route::delete('/cart/{id}', 'CartController@destroy')->name('shop.cart.destroy');
+        Route::get('/user', 'UserController@index')->name('home.user.index');
+        Route::post('/cart', 'CartController@store')->name('home.cart.store');
+        Route::get('/cart', 'CartController@index')->name('home.cart.index');
+        Route::put('/cart/add', 'CartController@add')->name('home.cart.add');
+        Route::put('/cart/subtract', 'CartController@subtract')->name('home.cart.subtract');
+        Route::delete('/cart/{id}', 'CartController@destroy')->name('home.cart.destroy');
+        Route::post('/order', 'OrderController@store')->name('home.order.store');
+        Route::get('/order', 'OrderController@index')->name('home.order.index');
+        Route::get('/order/{sn}', 'OrderController@show')->name('home.order.show');
+        Route::get('/order/success/{sn}', 'OrderController@success')->name('home.order.success');
+        Route::get('/address', 'AddressController@index')->name('home.address.index');
+//        Route::get('/address/{id}', 'AddressController@edit')->name('home.address.edit');
+        Route::post('/address', 'AddressController@store')->name('home.address.store');
+        Route::put('/address/{id}', 'AddressController@update')->name('home.address.update');
     });
 //    Route::get('/oauth', 'WechatController@oauth');
 //    Route::group(['middleware' => ['home.auth']], function () {

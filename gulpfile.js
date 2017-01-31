@@ -33,28 +33,36 @@ elixir(mix => {
     mix.scripts('admin/goods/jquery.ui.widget.js', 'public/js/admin/goods/jquery.ui.widget.js');
     mix.copy('resources/assets/images/admin', 'public/images/admin/');
 
-    //Shop css
-    mix.styles('shop/common.css', 'public/css/shop/common.css');
-    mix.styles('shop/swiper.css', 'public/css/shop/swiper.css');
-    mix.styles('shop/index.css', 'public/css/shop/index.css');
+    //home css
+    mix.styles('home/common.css', 'public/css/home/common.css');
+    mix.styles('home/swiper.css', 'public/css/home/swiper.css');
+    mix.styles('home/index.css', 'public/css/home/index.css');
 
     mix.copy('node_modules/admin-lte/plugins/daterangepicker/daterangepicker.css', 'resources/assets/css/admin/daterangepicker.css');
     mix.styles('admin/daterangepicker.css', 'public/css/admin/daterangepicker.css');
     mix.copy('node_modules/bootstrap-sass/assets/fonts', 'public/css/fonts');
 
-    mix.sass('shop/app.scss', 'public/css/shop/app.css');
-    mix.styles('shop/base.css', 'public/css/shop/base.css');
-    mix.styles('shop/iosOverlay.css', 'public/css/shop/iosOverlay.css');
-    mix.styles('shop/goods.css', 'public/css/shop/goods.css');
-    mix.styles('shop/cart.css', 'public/css/shop/cart.css');
-    mix.scripts('shop/swiper.jquery.min.js', 'public/js/shop/swiper.jquery.min.js');
-    mix.scripts('shop/fastclick.js', 'public/js/shop/fastclick.js');
-    mix.scripts('shop/spin.min.js', 'public/js/shop/spin.min.js');
-    mix.scripts('shop/iosOverlay.js', 'public/js/shop/iosOverlay.js');
-    mix.scripts('shop/goods.js', 'public/js/shop/goods.js');
-    mix.scripts('shop/cart.js', 'public/js/shop/cart.js');
-    mix.scripts('shop/myc.js', 'public/js/shop/myc.js');
-    mix.copy('resources/assets/images/shop', 'public/images/shop');
+    mix.sass('home/app.scss', 'public/css/home/app.css');
+    mix.styles('home/base.css', 'public/css/home/base.css');
+    mix.styles('home/select.css', 'public/css/home/select.css');
+    mix.styles('home/select_address.css', 'public/css/home/select_address.css');
+    mix.styles('home/iosOverlay.css', 'public/css/home/iosOverlay.css');
+    mix.styles('home/goods.css', 'public/css/home/goods.css');
+    mix.styles('home/cart.css', 'public/css/home/cart.css');
+    mix.styles('home/order_list.css', 'public/css/home/order_list.css');
+    mix.styles('home/order_show.css', 'public/css/home/order_show.css');
+    mix.styles('home/login.css', 'public/css/home/login.css');
+    mix.styles('home/user.css', 'public/css/home/user.css');
+    mix.scripts('home/swiper.jquery.min.js', 'public/js/home/swiper.jquery.min.js');
+    mix.scripts('home/fastclick.js', 'public/js/home/fastclick.js');
+    mix.scripts('home/spin.min.js', 'public/js/home/spin.min.js');
+    mix.scripts('home/iosOverlay.js', 'public/js/home/iosOverlay.js');
+    mix.scripts('home/goods.js', 'public/js/home/goods.js');
+    mix.scripts('home/cart.js', 'public/js/home/cart.js');
+    mix.scripts('home/myc.js', 'public/js/home/myc.js');
+    mix.scripts('home/area.js', 'public/js/home/area.js');
+    mix.scripts('home/select_address.js', 'public/js/home/select_address.js');
+    mix.copy('resources/assets/images/home', 'public/images/home');
 
 });
 
