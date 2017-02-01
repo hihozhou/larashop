@@ -55,7 +55,7 @@ class OrderController extends \App\Http\Controllers\BaseController
 //                var_dump($data);exit;
                 //生成订单
                 $order = Order::create($data);
-                $order->order_actions()->create(['desc' => '提交订单']);
+                $order->actions()->create(['desc' => '提交订单']);
                 foreach ($cartGoodsList as $cartGoods) {
                     $orderDetail = [
                         'goods_detail_id' => $cartGoods->goods_detail_id,
@@ -114,9 +114,25 @@ class OrderController extends \App\Http\Controllers\BaseController
                 $query->with('goods');
             }]);
         }])->where('user_id', \Auth::user()->id)->where('sn', $sn)
-            ->orderBy('created_at', 'DESC')->firstOrFail();
+            ->firstOrFail();
 //        var_dump($order->toArray());exit;
         return view('home.order.show', ['order' => $order]);
+    }
+
+    public function cancel($sn)
+    {
+        try {
+            \DB::transaction(function () use ($sn) {
+                $order = Order::where('user_id', \Auth::user()->id)
+                    ->where('sn', $sn)->firstOrFail();
+                $order->status = -1;
+                $order->save();
+                $order->actions()->create(['desc' => '用户取消订单']);
+            });
+        } catch (\Exception $e) {
+            return $this->jsonFailResponse('订单取消申请失败');
+        }
+        return $this->jsonSuccessResponse();
     }
 
 

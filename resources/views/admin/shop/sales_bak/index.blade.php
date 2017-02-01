@@ -9,9 +9,9 @@
     <section class="content">
         <div>
             <h1>特卖管理</h1>
-            {{--<button id="create" type="button" class="create btn btn-lg btn-primary btn-flat">--}}
-            {{--添加--}}
-            {{--</button>--}}
+            <button type="button" class="create btn btn-lg btn-primary btn-flat">
+                添加
+            </button>
         </div>
         <div class="row">
             <div class="col-md-12">
@@ -21,10 +21,12 @@
                         <div class="input-group-addon">
                             <i class="fa fa-calendar"></i>
                         </div>
-                        <input type="text" class="form-control" id="sold_at" placeholder="时间段"
+                        <input type="hidden" id="began_at" value="{{\App\Models\GoodsSales::getSoldBeganAt()}}"/>
+                        <input type="hidden" id="ended_at" value="{{\App\Models\GoodsSales::getSoldEndedAt()}}"/>
+                        <input type="text" class="form-control" id="sold_at" placeholder="开始时间"
                                value="">
                         <span class="input-group-btn">
-                            <button type="button" class="btn btn-info btn-flat" id="sold_save">创建</button>
+                            <button type="button" class="btn btn-info btn-flat" id="sold_save">Go!</button>
                         </span>
                     </div>
 
@@ -33,10 +35,9 @@
                         <thead>
                         <tr>
                             <th>#</th>
-                            <th>开始时间</th>
-                            <th>结束时间</th>
-                            <th>是否上线</th>
-                            <th>商品数量</th>
+                            <th>图片</th>
+                            <th>商品名称</th>
+                            <th>是否上架</th>
                             <th>添加时间</th>
                             <th>操作</th>
                         </tr>
@@ -46,14 +47,17 @@
                             <tr>
                                 <td>{{$sales->id}}</td>
                                 <td>
-                                    {{$sales->began_at}}
+                                    <img src="{{\App\Models\Image::baseUrl($sales->detail->image_src->name)}}"
+                                         width="60px" height="60px">
                                 </td>
                                 <td>
-                                    {{$sales->ended_at}}
+                                    {{$sales->detail->goods->name}}<br/>
+                                    @foreach($sales->detail->skus as $sku)
+                                        -{{$sku->sku->name}}
+                                    @endforeach
 
                                 </td>
-                                <td data-id="{{$sales->id}}"
-                                    data-url="{{route('admin.sales.sell',['id'=>$sales->id])}}">
+                                <td data-id="{{$sales->id}}">
                                     <div class="btn-group">
                                         <button type="button" class="btn btn-success is_sale" data-val="1"
                                                 @if($sales->is_sale==1) disabled @endif>上架
@@ -63,11 +67,9 @@
                                         </button>
                                     </div>
                                 </td>
-                                <td>0</td>
                                 <td>{{$sales->created_at}}</td>
                                 <td data-id="{{$sales->id}}">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-success edit">上架管理</button>
                                         <button type="button" class="btn btn-warning edit">编辑</button>
                                         <button type="button" class="btn btn-danger delete">
                                             删除
@@ -92,19 +94,14 @@
 
 @section('script')
     <script type="text/javascript">
-        $('#create').click(function () {
-            window.location.href = '{!! action('Admin\DiscountSalesController@create') !!}';
-        });
-
         $('#sold_at').daterangepicker({
             timePicker: true,
             timePickerIncrement: 30,
-//            startDate: $('#began_at').val(),
-//            endDate: $('#ended_at').val(),
+            startDate: $('#began_at').val(),
+            endDate: $('#ended_at').val(),
             locale: {format: 'YYYY/MM/DD H:mm'},
             timePicker24Hour: true
         });
-
         $('#sold_save').click(function () {
             var rangeArr = $("#sold_at").val().split(' - ');
             console.log(rangeArr);
@@ -114,18 +111,17 @@
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                url: '{!! action('Admin\DiscountSalesController@store') !!}',
+                url: "/admin/sales/time/update",
                 type: 'post',
                 data: {
                     began_at: began_at,
                     ended_at: ended_at
                 },
                 success: function (response) {
-                    if (response.error_code === 0) {
-                        show_stack_success('创建成功', response);
-                        window.location.reload();
+                    if (response.error_code == 0) {
+                        show_stack_success('时间更新成功', response);
                     } else {
-                        show_stack_error('创建失败', response);
+                        show_stack_error('时间更新失败', response);
                     }
                 }, error: function () {
                     show_stack_error();
@@ -141,22 +137,22 @@
         });
 
         $(".is_sale").click(function () {
-            var url = $(this).closest("td").attr("data-url");
+            var id = $(this).closest("td").attr("data-id");
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                url: url,
+                url: "/admin/sales/" + id + '/sell',
                 type: 'PUT',
                 data: {
                     is_sale: $(this).attr("data-val")
                 },
                 success: function (response) {
                     if (response.error_code == 0) {
-                        show_stack_success('状态更改成功', response);
+                        show_stack_success('售卖状态更改成功', response);
                         window.location.reload();
                     } else {
-                        show_stack_error('状态更改失败', response);
+                        show_stack_error('售卖状态更改失败', response);
                     }
                 }, error: function () {
                     show_stack_error();

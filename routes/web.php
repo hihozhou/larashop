@@ -52,9 +52,11 @@ Route::group(
             Route::resource('goods', 'GoodsController');
             Route::put('goods/{id}/sell', 'GoodsController@sellChange');
             Route::post('/upload', 'UploadController@store');
-            Route::resource('sales', 'GoodsSalesController');
-            Route::put('sales/{id}/sell', 'GoodsSalesController@sellChange');
-            Route::post('sales/time/update', 'GoodsSalesController@timeUpdate');
+            Route::resource('sales', 'DiscountSalesController');
+            Route::put('sales/{id}/sell', 'DiscountSalesController@sell')->name('admin.sales.sell');
+//            Route::resource('sales', 'GoodsSalesController');
+
+//            Route::post('sales/time/update', 'GoodsSalesController@timeUpdate');
 //            Route::get('{router?}', function ($router = null) {
 ////                echo "123";exit;
 //////                var_dump($router);
@@ -97,6 +99,7 @@ Route::group(['namespace' => 'Home'], function () {
         Route::post('/order', 'OrderController@store')->name('home.order.store');
         Route::get('/order', 'OrderController@index')->name('home.order.index');
         Route::get('/order/{sn}', 'OrderController@show')->name('home.order.show');
+        Route::delete('/order/{sn}', 'OrderController@cancel')->name('home.order.cancel');
         Route::get('/order/success/{sn}', 'OrderController@success')->name('home.order.success');
         Route::get('/address', 'AddressController@index')->name('home.address.index');
 //        Route::get('/address/{id}', 'AddressController@edit')->name('home.address.edit');

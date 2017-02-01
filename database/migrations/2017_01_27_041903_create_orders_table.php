@@ -33,7 +33,8 @@ class CreateOrdersTable extends Migration
             $table->tinyInteger('paid_way')->default(0)->comment('支付途径:0未知,1微信,2支付宝,3现金');
             $table->tinyInteger('paid_type')->default(2)->comment('支付方式:1先支付,2货到付款');
             $table->timestamp('paid_at')->nullable()->default(NULL)->comment('支付时间');
-            $table->tinyInteger('status')->default(1)->comment('订单状态:-1取消订单,1提交订单,2商品出库,3发货(寄快递),4签收货物,5完成订单');
+            $table->tinyInteger('status')->default(1)->comment('订单状态:-2订单取消成功,-1取消订单申请,1提交订单,2商品出库,3发货(寄快递),4签收货物,5完成订单');
+            $table->tinyInteger('type')->default(1)->comment('订单类型:1普通订单,2促销订单');
             $table->timestamps();
             $table->softDeletes();
         });

@@ -15,40 +15,27 @@
                     </div>
                     <form class="form-horizontal" onsubmit="return false">
                         <div class="box-body">
+                            <input type="hidden" value="" id="id">
                             <div class="form-group">
-                                <label class="col-sm-1 control-label">商品详情</label>
+                                <label class="col-sm-1 control-label">时间段</label>
                                 <div class="col-sm-11">
-                                    <input type="number" class="form-control" id="goods_detail_id" placeholder="商品详情id"
-                                           value="{{Request::input('goods_detail_id',0)}}">
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-1 control-label">折扣</label>
-                                <div class="col-sm-11">
-                                    <input type="number" class="form-control" id="discount" placeholder="折扣"
-                                           value="0.00">
+                                    <input type="text" class="form-control" id="sold_at" placeholder="时间段"
+                                           value="">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-1 control-label">是否销售</label>
                                 <div class="col-sm-11 btn-group clearfix" data-toggle="buttons">
-                                    <label class="btn btn-warning active">
+                                    <label class="btn btn-warning">
                                         <input name="isSale" type="radio" id="allow_1" autocomplete="off"
-                                               value="1" checked>
+                                               value="1">
                                         上架
                                     </label>
-                                    <label class="btn btn-warning">
+                                    <label class="btn btn-warning active">
                                         <input name="isSale" type="radio" id="allow_0" autocomplete="off"
-                                               value="0"
+                                               value="0" checked
                                         > 下架
                                     </label>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-sm-1 control-label">库存</label>
-                                <div class="col-sm-11">
-                                    <input type="number" class="form-control" id="stock" placeholder="库存"
-                                           value="0">
                                 </div>
                             </div>
                             {{--<div class="form-group">--}}
@@ -68,7 +55,7 @@
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer">
-                            <button class="btn btn-flat btn-info pull-right" id="save">保存</button>
+                            <button class="btn btn-flat btn-info pull-right" id="save">确定</button>
                             <button class="btn btn-flat btn-danger" id="cancel">取消</button>
                         </div>
                         <!-- /.box-footer -->
@@ -82,39 +69,44 @@
 
 @section('script')
     <script type="text/javascript">
-        //Date range picker with time picker
-        //        $('#began_at').daterangepicker({timePicker: true, timePickerIncrement: 30, format: 'MM/DD/YYYY h:mm A'});
-        //        $('#ended_at').daterangepicker({timePicker: true, timePickerIncrement: 30, format: 'MM/DD/YYYY h:mm A'});
-
-        $("#save").click(function () {
-
-            var data = {
-                goods_detail_id: $('#goods_detail_id').val(),
-                discount: $('#discount').val(),
-                is_sale: $(":radio[name='isSale']:checked").val(),
-                stock: $("#stock").val()
-            };
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                url: "/admin/sales",
-                type: 'post',
-                data: data,
-                success: function (response) {
-                    if (response.error_code == 0) {
-                        show_stack_success('Sku saved', response);
-                        window.location = '/admin/sales';
-                    } else {
-                        show_stack_error('Failed to save sku', response);
-                    }
-                }, error: function () {
-                    show_stack_error();
-                }
-            });
+        $('#sold_at').daterangepicker({
+            timePicker: true,
+            timePickerIncrement: 30,
+//            startDate: $('#began_at').val(),
+//            endDate: $('#ended_at').val(),
+            locale: {format: 'YYYY/MM/DD H:mm'},
+            timePicker24Hour: true
         });
-        $("#cancel").click(function () {
-            history.back();
-        });
+
+//        $("#save").click(function () {
+//
+//            var data = {
+//                goods_detail_id: $('#goods_detail_id').val(),
+//                discount: $('#discount').val(),
+//                is_sale: $(":radio[name='isSale']:checked").val(),
+//                stock: $("#stock").val()
+//            };
+//            $.ajax({
+//                headers: {
+//                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+//                },
+//                url: "/admin/sales/" + $('#id').val(),
+//                type: 'PUT',
+//                data: data,
+//                success: function (response) {
+//                    if (response.error_code == 0) {
+//                        show_stack_success('Sku saved', response);
+//                        window.location = '/admin/sales';
+//                    } else {
+//                        show_stack_error('Failed to save sku', response);
+//                    }
+//                }, error: function () {
+//                    show_stack_error();
+//                }
+//            });
+//        });
+//        $("#cancel").click(function () {
+//            history.back();
+//        });
     </script>
 @endsection

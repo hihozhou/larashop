@@ -21,7 +21,7 @@ class Order extends Model
         return 'le' . time() . getRandomStr(5, '0123456789');
     }
 
-    public function order_actions()
+    public function actions()
     {
         return $this->hasMany('App\Models\OrderAction', 'order_id', 'id');
     }
