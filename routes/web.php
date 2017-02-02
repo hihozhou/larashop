@@ -54,6 +54,10 @@ Route::group(
             Route::post('/upload', 'UploadController@store');
             Route::resource('sales', 'DiscountSalesController');
             Route::put('sales/{id}/sell', 'DiscountSalesController@sell')->name('admin.sales.sell');
+            Route::get('sales/{id}/details', 'DiscountSalesController@details')->name('admin.sales.details');
+            Route::get('sales/{id}/details/create', 'DiscountSaleDetailsController@create')->name('admin.sales.details.create');
+            Route::resource('sale_details', 'DiscountSaleDetailsController');
+            Route::put('sale_details/{id}/sell', 'DiscountSaleDetailsController@sell')->name('admin.sale_details.sell');
 //            Route::resource('sales', 'GoodsSalesController');
 
 //            Route::post('sales/time/update', 'GoodsSalesController@timeUpdate');

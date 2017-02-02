@@ -666,7 +666,8 @@
 //            console.log($(this).attr('data-id'));
 //            return;
             //TODO 获取最外层data-id
-            location.href = '/admin/sales/create?goods_detail_id=' + $(this).attr('data-id');
+//            location.href = '/admin/sales/create?goods_detail_id=' + $(this).attr('data-id');
+            location.href = '/admin/sale_details/create?goods_detail_id=' + $(this).attr('data-id');
         });
 
         /**

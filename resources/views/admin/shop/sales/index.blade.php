@@ -63,11 +63,14 @@
                                         </button>
                                     </div>
                                 </td>
-                                <td>0</td>
+                                <td>{{$sales->detailCount()}}</td>
                                 <td>{{$sales->created_at}}</td>
-                                <td data-id="{{$sales->id}}">
+                                <td data-id="{{$sales->id}}"
+                                    data-delete-url="{{action('Admin\DiscountSalesController@destroy',['id'=>$sales->id])}}"
+                                    data-edit-url="{{action('Admin\DiscountSalesController@edit',['id'=>$sales->id])}}"
+                                    data-details-url="{{route('admin.sales.details',['id'=>$sales->id])}}">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-success edit">上架管理</button>
+                                        <button type="button" class="btn btn-success details">上架管理</button>
                                         <button type="button" class="btn btn-warning edit">编辑</button>
                                         <button type="button" class="btn btn-danger delete">
                                             删除
@@ -94,6 +97,33 @@
     <script type="text/javascript">
         $('#create').click(function () {
             window.location.href = '{!! action('Admin\DiscountSalesController@create') !!}';
+        });
+
+        $('.delete').click(function () {
+            var url = $(this).closest("td").attr("data-delete-url");
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                url: url,
+                type: 'delete',
+                data: {},
+                success: function (response) {
+                    if (response.error_code === 0) {
+                        show_stack_success('状态更改成功', response);
+                        window.location.reload();
+                    } else {
+                        show_stack_error('状态更改失败', response);
+                    }
+                }, error: function () {
+                    show_stack_error();
+                }
+            });
+        });
+
+        $('.details').click(function () {
+            var url = $(this).closest("td").attr("data-details-url");
+            window.location.href = url;
         });
 
         $('#sold_at').daterangepicker({
@@ -163,6 +193,7 @@
                 }
             });
         });
+
 
     </script>
 @endsection

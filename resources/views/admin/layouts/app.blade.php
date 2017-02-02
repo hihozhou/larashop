@@ -269,7 +269,7 @@
             hide: true,
             delay: 5000,
             closer: true
-        }
+        };
         if (msg === undefined) {
             opts.title = "Notice me";
             opts.text = "All in order.";

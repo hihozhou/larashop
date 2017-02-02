@@ -15,30 +15,53 @@
                     </div>
                     <form class="form-horizontal" onsubmit="return false">
                         <div class="box-body">
-                            <input type="hidden" value="{{$sales->id}}" id="id">
                             <div class="form-group">
-                                <label class="col-sm-1 control-label">时间段</label>
+                                <label class="col-sm-1 control-label">促销期</label>
                                 <div class="col-sm-11">
-                                    <input type="text" class="form-control" id="sold_at" placeholder="时间段"
-                                           value="">
+                                    <select id="discount_sale_id" class="form-control select2" style="width: 100%;">
+                                        <option value="0">请选择</option>
+                                        @foreach($salesList as $sales)
+                                            <option value="{{$sales->id}}">{{$sales->id}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">商品详情</label>
+                                <div class="col-sm-11">
+                                    <input type="number" class="form-control" id="goods_detail_id" placeholder="商品详情id"
+                                           value="{{Request::input('goods_detail_id',0)}}">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">折扣</label>
+                                <div class="col-sm-11">
+                                    <input type="number" class="form-control" id="discount" placeholder="折扣"
+                                           value="0.00">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label class="col-sm-1 control-label">是否销售</label>
                                 <div class="col-sm-11 btn-group clearfix" data-toggle="buttons">
-                                    <label class="btn btn-warning @if($sales->is_sale==1)active @endif">
+                                    <label class="btn btn-warning active">
                                         <input name="isSale" type="radio" id="allow_1" autocomplete="off"
-                                               value="1" @if($sales->is_sale==1)checked @endif>
+                                               value="1" checked>
                                         上架
                                     </label>
-                                    <label class="btn btn-warning @if($sales->is_sale==0)active @endif">
+                                    <label class="btn btn-warning">
                                         <input name="isSale" type="radio" id="allow_0" autocomplete="off"
-                                               value="0" @if($sales->is_sale==0)checked @endif
+                                               value="0"
                                         > 下架
                                     </label>
                                 </div>
                             </div>
-
+                            <div class="form-group">
+                                <label class="col-sm-1 control-label">库存</label>
+                                <div class="col-sm-11">
+                                    <input type="number" class="form-control" id="stock" placeholder="库存"
+                                           value="0">
+                                </div>
+                            </div>
                         </div>
                         <!-- /.box-body -->
                         <div class="box-footer">
@@ -56,37 +79,27 @@
 
 @section('script')
     <script type="text/javascript">
-        $('#sold_at').daterangepicker({
-            timePicker: true,
-            timePickerIncrement: 30,
-            startDate: '{!! $sales->began_at !!}',
-            endDate: '{!! $sales->ended_at !!}',
-            locale: {format: 'YYYY/MM/DD H:mm'},
-            timePicker24Hour: true
-        });
         $("#save").click(function () {
-            var rangeArr = $("#sold_at").val().split(' - ');
-            console.log(rangeArr);
-            var began_at = rangeArr[0];
-            var ended_at = rangeArr[1];
             var data = {
-                began_at: began_at,
-                ended_at: ended_at,
-                is_sale: $(":radio[name='isSale']:checked").val()
+                discount_sale_id: $('#discount_sale_id').val(),
+                goods_detail_id: $('#goods_detail_id').val(),
+                discount: $('#discount').val(),
+                is_sale: $(":radio[name='isSale']:checked").val(),
+                stock: $("#stock").val()
             };
             $.ajax({
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
-                url: "/admin/sales/" + $('#id').val(),
-                type: 'PUT',
+                url: '{!! action('Admin\DiscountSaleDetailsController@store') !!}',
+                type: 'post',
                 data: data,
                 success: function (response) {
                     if (response.error_code === 0) {
-                        show_stack_success('更新称该', response);
+                        show_stack_success('特卖添加成功', response);
                         window.location = '/admin/sales';
                     } else {
-                        show_stack_error('更新失败', response);
+                        show_stack_error('特卖添加失败', response);
                     }
                 }, error: function () {
                     show_stack_error();
